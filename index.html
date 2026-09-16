@@ -14,7 +14,7 @@
 
   <title>이용재 & 이민진 · OUR WEDDING</title>
 
-  <!-- Google Fonts: Caveat(사진 위 손글씨), Cormorant Garamond, Noto Serif KR -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -24,13 +24,11 @@
 
 <body>
 
-<!-- 💖 1. 오프닝 화면 (검정 배경 + 핑크 신랑♥신부 + 핑크 하트 버튼) -->
+<!-- 💖 1. 오프닝 화면 -->
 <div class="opening-overlay" id="openingOverlay">
   <div class="opening-content">
-    <div class="opening-couples" id="openingCouples">
-      <span id="openingGroom">이용재</span>
-      <span class="opening-heart">♥</span>
-      <span id="openingBride">이민진</span>
+    <div class="opening-couples">
+      <span>이용재</span><span class="opening-heart">♥</span><span>이민진</span>
     </div>
     <button class="opening-btn" id="openBtn">
       <span class="btn-heart">♥</span>
@@ -46,18 +44,15 @@
     <button class="menu-icon" aria-label="메뉴">☰</button>
   </header>
 
-  <!-- COVER SECTION (첫 화면 핑크 포스터 카드) -->
+  <!-- COVER SECTION -->
   <section class="cover reveal">
     <div class="cover-hero-header">
-      <div class="cover-kicker" id="coverKicker">JANUARY 02, 2027 SAT 11:00 AM</div>
-      <div class="cover-subkicker" id="coverSubkicker">AT APELGAMO SEONLLEUNG</div>
+      <div class="cover-kicker">JANUARY 02, 2027 SAT 11:00 AM</div>
+      <div class="cover-subkicker">AT APELGAMO SEONLLEUNG</div>
     </div>
 
-    <!-- 메인 사진 영역 -->
     <div class="cover-photo-wrap">
       <img class="cover-photo" src="images/hero/1.jpg" alt="메인 사진">
-      
-      <!-- 사진 위 손글씨 멘트 -->
       <div class="cover-poster-title">
         <span>I feel I'm</span><br>
         <span>falling in</span><br>
@@ -68,19 +63,19 @@
     </div>
 
     <div class="cover-info">
-      <div id="coverDate">2027.01.02 토요일 오전 11:00</div>
-      <div id="coverVenue">아펠가모 선릉</div>
+      <div>2027.01.02 토요일 오전 11:00</div>
+      <div>아펠가모 선릉</div>
     </div>
   </section>
 
-  <!-- INVITATION SECTION (한 뷰에 시각적으로 잘 들어가도록 배치) -->
+  <!-- INVITATION SECTION -->
   <section class="section reveal">
     <div class="intro-text-block">
       <h2 class="join-title">Join us<br>for our wedding</h2>
 
       <div class="family-info">
-        <div>이강목 · 임남영 <span class="role">의 아들</span> <strong id="groomFullName">용재</strong></div>
-        <div>이만수 · 조은영 <span class="role">의 딸</span> <strong id="brideFullName">민진</strong></div>
+        <div>이강목 · 임남영 <span class="role">의 아들</span> <strong>용재</strong></div>
+        <div>이만수 · 조은영 <span class="role">의 딸</span> <strong>민진</strong></div>
       </div>
 
       <div class="section-title">INVITATION</div>
@@ -94,22 +89,81 @@
     </div>
   </section>
 
-  <!-- CALENDAR SECTION -->
+  <!-- CALENDAR SECTION (캘린더 직접 마크업 구현으로 깨짐 방지) -->
   <section class="section reveal">
     <div class="date-lead">
-      <div class="big-date" id="dateLead">2027.01.02</div>
-      <div class="weekday" id="weekday">토요일 오전 11시</div>
+      <div class="big-date">2027.01.02</div>
+      <div class="weekday">토요일 오전 11시</div>
     </div>
 
-    <div class="calendar">
-      <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="calendar-wrap">
+      <div class="calendar-header-month">2027년 1월</div>
+      <div class="calendar-table">
+        <div class="cal-day-name sun">일</div>
+        <div class="cal-day-name">월</div>
+        <div class="cal-day-name">화</div>
+        <div class="cal-day-name">수</div>
+        <div class="cal-day-name">목</div>
+        <div class="cal-day-name">금</div>
+        <div class="cal-day-name sat">토</div>
+
+        <!-- 2027년 1월 달력 그리드 (1일: 금요일) -->
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day empty"></div>
+        <div class="cal-day">1</div>
+        <div class="cal-day sat highlight-day">2</div> <!-- 결혼식 당일 -->
+
+        <div class="cal-day sun">3</div>
+        <div class="cal-day">4</div>
+        <div class="cal-day">5</div>
+        <div class="cal-day">6</div>
+        <div class="cal-day">7</div>
+        <div class="cal-day">8</div>
+        <div class="cal-day sat">9</div>
+
+        <div class="cal-day sun">10</div>
+        <div class="cal-day">11</div>
+        <div class="cal-day">12</div>
+        <div class="cal-day">13</div>
+        <div class="cal-day">14</div>
+        <div class="cal-day">15</div>
+        <div class="cal-day sat">16</div>
+
+        <div class="cal-day sun">17</div>
+        <div class="cal-day">18</div>
+        <div class="cal-day">19</div>
+        <div class="cal-day">20</div>
+        <div class="cal-day">21</div>
+        <div class="cal-day">22</div>
+        <div class="cal-day sat">23</div>
+
+        <div class="cal-day sun">24</div>
+        <div class="cal-day">25</div>
+        <div class="cal-day">26</div>
+        <div class="cal-day">27</div>
+        <div class="cal-day">28</div>
+        <div class="cal-day">29</div>
+        <div class="cal-day sat">30</div>
+
+        <div class="cal-day sun">31</div>
+      </div>
     </div>
   </section>
 
-  <!-- GALLERY SECTION -->
+  <!-- GALLERY SECTION (갤러리 HTML 직접 구성) -->
   <section class="section reveal">
     <div class="section-title">GALLERY</div>
-    <div class="photo-grid" id="gallery"></div>
+    <div class="photo-grid">
+      <div class="gallery-item"><img src="images/hero/1.jpg" alt="갤러리 1"></div>
+      <div class="gallery-item"><img src="images/hero/2.jpg" alt="갤러리 2"></div>
+      <div class="gallery-item"><img src="images/hero/3.jpg" alt="갤러리 3"></div>
+      <div class="gallery-item"><img src="images/hero/4.jpg" alt="갤러리 4"></div>
+      <div class="gallery-item"><img src="images/hero/5.jpg" alt="갤러리 5"></div>
+      <div class="gallery-item"><img src="images/hero/6.jpg" alt="갤러리 6"></div>
+    </div>
   </section>
 
   <!-- LOCATION SECTION -->
@@ -117,29 +171,29 @@
     <div class="section-title">LOCATION</div>
 
     <div class="location-info">
-      <div class="venue" id="venueName">아펠가모 선릉</div>
-      <div class="address" id="venueAddress">
+      <div class="venue">아펠가모 선릉</div>
+      <div class="address">
         서울특별시 강남구 테헤란로 322 한신인터밸리24 빌딩 4층<br>02-2186-6888
       </div>
 
       <div class="map-buttons">
-        <a class="chip-button" id="naverMap" href="https://naver.me/GZDPBDgT" target="_blank">네이버 지도 ↗</a>
-        <a class="chip-button" id="kakaoMap" href="https://kko.to/M3hHQ5aIwQ" target="_blank">카카오맵 ↗</a>
-        <a class="chip-button" id="tmap" href="https://tmap.co.kr" target="_blank">티맵 ↗</a>
+        <a class="chip-button" href="https://naver.me/GZDPBDgT" target="_blank">네이버 지도 ↗</a>
+        <a class="chip-button" href="https://kko.to/M3hHQ5aIwQ" target="_blank">카카오맵 ↗</a>
+        <a class="chip-button" href="https://tmap.co.kr" target="_blank">티맵 ↗</a>
       </div>
 
       <div class="transport">
         <div class="transport-row">
           <strong>[지하철]</strong>
-          <span id="subway">2호선 / 수인분당선 선릉역 4번 출구에서 도보 3분</span>
+          <span>2호선 / 수인분당선 선릉역 4번 출구에서 도보 3분</span>
         </div>
         <div class="transport-row">
           <strong>[버스]</strong>
-          <span id="bus">선릉역 정류장 하차 (간선: 146, 341, 360 / 지선: 4412)</span>
+          <span>선릉역 정류장 하차 (간선: 146, 341, 360 / 지선: 4412)</span>
         </div>
         <div class="transport-row">
           <strong>[주차]</strong>
-          <span id="parking">건물 내 지하 주차장 이용 (하객 2시간 무료 주차)</span>
+          <span>건물 내 지하 주차장 이용 (하객 2시간 무료 주차)</span>
         </div>
       </div>
     </div>
@@ -194,6 +248,33 @@
 <!-- 계좌 복사 안내 토스트 메시지 -->
 <div class="toast" id="toast"></div>
 
-<script src="script.js"></script>
+<!-- 심플하고 안전한 인라인 제어 스크립트 (오프닝, 계좌 아코디언, 복사 기능) -->
+<script>
+  // 1. 오프닝 닫기 버튼
+  document.getElementById('openBtn').addEventListener('click', function() {
+    const overlay = document.getElementById('openingOverlay');
+    overlay.classList.add('fade-out');
+  });
+
+  // 2. 계좌 아코디언 토글
+  document.querySelectorAll('.account-toggle').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const content = this.nextElementSibling;
+      const isOpen = content.style.display === 'block';
+      content.style.display = isOpen ? 'none' : 'block';
+      this.querySelector('span:last-child').textContent = isOpen ? '∨' : '∧';
+    });
+  });
+
+  // 3. 계좌번호 복사 기능
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const text = this.getAttribute('data-copy');
+      navigator.clipboard.writeText(text).then(() => {
+        alert('계좌번호가 복사되었습니다: ' + text);
+      });
+    });
+  });
+</script>
 </body>
 </html>
