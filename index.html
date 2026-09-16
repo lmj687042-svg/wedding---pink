@@ -77,7 +77,6 @@
       position: relative;
     }
     
-    /* 섹션 사이 은은한 얇은 구분선 */
     .section:not(:last-of-type)::after {
       content: '';
       position: absolute;
@@ -136,14 +135,6 @@
       padding: 20px;
       box-sizing: border-box;
     }
-    .calendar-header {
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: #fff;
-      margin-bottom: 16px;
-      letter-spacing: 1px;
-    }
     .calendar-grid {
       display: grid !important;
       grid-template-columns: repeat(7, 1fr) !important;
@@ -188,6 +179,31 @@
     .account-content { padding: 0 14px 12px 14px; display: none; }
     .account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
     .copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; cursor: pointer; }
+
+    /* 💖 핑크색 복사 완료 토스트 팝업 디자인 */
+    .toast-popup {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background-color: #d88a9a;
+      color: #0d0d0d;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(216, 138, 154, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 10000;
+      white-space: nowrap;
+    }
+    .toast-popup.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
 
     footer { text-align: center; padding: 40px 0; }
     .footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
@@ -279,7 +295,10 @@
     <div class="photo-grid">
       <div class="gallery-item"><img src="images/hero/1.jpg" alt="갤러리 1"></div>
       <div class="gallery-item"><img src="images/hero/2.jpg" alt="갤러리 2"></div>
-      
+      <div class="gallery-item"><img src="images/hero/3.jpg" alt="갤러리 3"></div>
+      <div class="gallery-item"><img src="images/hero/4.jpg" alt="갤러리 4"></div>
+      <div class="gallery-item"><img src="images/hero/5.jpg" alt="갤러리 5"></div>
+      <div class="gallery-item"><img src="images/hero/6.jpg" alt="갤러리 6"></div>
     </div>
   </section>
 
@@ -353,6 +372,9 @@
   </footer>
 </main>
 
+<!-- 💖 복사 완료 핑크색 토스트 팝업 요소 -->
+<div class="toast-popup" id="toastPopup">계좌번호가 복사되었습니다.</div>
+
 <!-- 스크립트 -->
 <script>
   // 1. 오프닝 닫기
@@ -405,12 +427,19 @@
     });
   });
 
-  // 4. 계좌 복사
+  // 4. 핑크색 토스트 팝업과 계좌 복사 기능
+  let toastTimer;
   document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const text = this.getAttribute('data-copy');
       navigator.clipboard.writeText(text).then(() => {
-        alert('계좌번호가 복사되었습니다: ' + text);
+        const toast = document.getElementById('toastPopup');
+        toast.classList.add('show');
+        
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2000);
       });
     });
   });
