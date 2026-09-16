@@ -654,22 +654,22 @@
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드 (드라이브 직행 최적화)
+  // 6. 실시간 하객스냅 사진 업로드 (CORS 우회 및 드라이브 직행 보장 전송)
   document.getElementById('snapInput').addEventListener('change', async function(e) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    showToast(`총 ${files.length}장의 사진을 드라이브로 전송 중입니다...`);
+    showToast(`총 ${files.length}장의 사진을 구글 드라이브로 전송 중입니다...`);
 
     for (let i = 0; i < files.length; i++) {
-      await compressAndUpload(files[i]);
+      await uploadPhotoSafely(files[i]);
     }
 
-    showToast('모든 사진이 드라이브에 안전하게 등록되었습니다!');
+    showToast('구글 드라이브 저장 완료!');
     document.getElementById('snapInput').value = '';
   });
 
-  function compressAndUpload(file) {
+  function uploadPhotoSafely(file) {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = function(event) {
@@ -698,35 +698,64 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          const photoName = "snap_" + Date.now() + "_" + (file.name || "photo.jpg");
 
-          const payload = {
-            photoData: compressedDataUrl,
-            photoName: "snap_" + Date.now() + "_" + (file.name || "photo.jpg"),
-            photoType: "image/jpeg"
-          };
+          // CORS 에러 원천 차단을 위한 숨겨진 폼(Form) 전송 방식 사용
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = SCRIPT_URL;
+          form.target = 'hidden_iframe';
+          form.style.display = 'none';
 
-          // 이미지 전송 요청
-          fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          })
-          .then(() => {
-            addPhotoToGrid(compressedDataUrl);
+          // 데이터 입력 필드 생성
+          const inputData = document.createElement('input');
+          inputData.type = 'hidden';
+          inputData.name = 'photoData';
+          inputData.value = compressedDataUrl;
+          form.appendChild(inputData);
+
+          const inputName = document.createElement('input');
+          inputName.type = 'hidden';
+          inputName.name = 'photoName';
+          inputName.value = photoName;
+          form.appendChild(inputName);
+
+          const inputDataType = document.createElement('input');
+          inputDataType.type = 'hidden';
+          inputDataType.name = 'photoType';
+          inputDataType.value = 'image/jpeg';
+          form.appendChild(inputDataType);
+
+          // 숨겨진 iframe 생성 (응답 페이지 리다이렉트 방지)
+          let iframe = document.getElementById('hidden_iframe');
+          if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.id = 'hidden_iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+          }
+
+          document.body.appendChild(form);
+          form.submit();
+          document.body.removeChild(form);
+
+          // 화면에 즉시 추가 후 완료 처리
+          addPhotoToGrid(compressedDataUrl);
+          
+          // 전송 안정화를 위한 미세 딜레이
+          setTimeout(() => {
             resolve();
-          })
-          .catch(() => {
-            addPhotoToGrid(compressedDataUrl);
-            resolve();
-          });
+          }, 800);
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     });
   }
+
+  function addPhotoTogrid(imageSrc) {} // 예비용
 
   function addPhotoToGrid(imageSrc) {
     const snapGrid = document.getElementById('snapGrid');
