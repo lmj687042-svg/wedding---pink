@@ -63,62 +63,82 @@ body {
    ========================================== */
 .cover {
   margin: 16px;
-  padding: 32px 20px;
-  background-color: #d88a9a; /* 프레임 핑크 배경 */
+  padding: 24px 16px 20px 16px;
+  background-color: #d88a9a; /* 인디핑크 배경 */
   border-radius: 4px;
-  color: #111111; /* 검정 글씨 */
+  color: #111111;
   text-align: center;
 }
 
 .cover-hero-header {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .cover-kicker {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #111111; /* 검정 글씨 */
-  margin-bottom: 12px;
+  letter-spacing: 2px;
+  color: #111111;
 }
 
-.cover-title {
+.cover-subkicker {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2.5rem;
-  font-weight: 400;
-  line-height: 1.1;
-  color: #ffffff; /* 화이트 필기체 텍스트 */
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  margin-bottom: 16px;
-}
-
-.ampersand {
-  font-style: italic;
-  font-size: 1.8rem;
-  opacity: 0.9;
-}
-
-.cover-info {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #111111; /* 검정 글씨 */
-  letter-spacing: 0.5px;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: #333333;
+  margin-top: 2px;
 }
 
 .cover-photo-wrap {
+  position: relative;
   width: 100%;
   border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .cover-photo {
   width: 100%;
   height: auto;
   display: block;
-  filter: grayscale(20%) contrast(105%); /* 빈티지 감성 필터 */
+  filter: brightness(85%) contrast(110%);
+}
+
+/* ✍️ 포스터 손글씨 타이틀 */
+.cover-poster-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  text-align: center;
+  pointer-events: none;
+  
+  font-family: 'Caveat', cursive;
+  font-size: 3.1rem;
+  font-weight: 700;
+  line-height: 1.02;
+  color: #ffffff;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+}
+
+.cover-poster-title span {
+  display: inline-block;
+  letter-spacing: -0.5px;
+}
+
+.cover-poster-title .last-word {
+  font-size: 3.5rem;
+  margin-top: 2px;
+}
+
+.cover-info {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: 0.5px;
 }
 
 /* ==========================================
