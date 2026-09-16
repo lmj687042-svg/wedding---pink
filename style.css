@@ -218,40 +218,12 @@ body {
 }
 
 /* ==========================================
-   CALENDAR SECTION
+   CALENDAR SECTION (완벽 가로 배치 격자)
    ========================================== */
 .date-lead { text-align: center; margin-bottom: 24px; }
 .big-date { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #ffffff; }
 .weekday { font-size: 0.8rem; color: #888; }
-.calendar { width: 100%; }
 
-/* ==========================================
-   LOCATION & ACCOUNT & FOOTER
-   ========================================== */
-.location-info { text-align: center; width: 100%; }
-.venue { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
-.address { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
-.map-buttons { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
-.chip-button { padding: 6px 12px; background: #1a1a1a; border: 1px solid #333; color: #d88a9a; text-decoration: none; font-size: 0.75rem; border-radius: 20px; }
-.transport { text-align: left; font-size: 0.8rem; color: #aaa; background: #141414; padding: 14px; border-radius: 4px; }
-
-.account-subtitle { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 16px; }
-.account-list { width: 100%; }
-.account-group { margin-bottom: 10px; background: #141414; border-radius: 4px; }
-.account-toggle { width: 100%; padding: 12px 14px; background: none; border: none; color: #fff; display: flex; justify-content: space-between; font-size: 0.85rem; cursor: pointer; }
-.account-content { padding: 0 14px 12px 14px; display: none; }
-.account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
-.copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; }
-
-footer { text-align: center; padding: 40px 0; }
-.footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
-
-/* 스크롤 시 등장하는 클래스 */
-.reveal { opacity: 1; transform: translateY(0); transition: all 0.8s ease; }
-
-/* ==========================================
-   CALENDAR STYLING
-   ========================================== */
 .calendar-wrap {
   width: 100%;
   background: #141414;
@@ -270,9 +242,9 @@ footer { text-align: center; padding: 40px 0; }
 }
 
 .calendar-table {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 6px !important;
   text-align: center;
   font-size: 0.82rem;
 }
@@ -289,7 +261,7 @@ footer { text-align: center; padding: 40px 0; }
 
 .cal-day {
   aspect-ratio: 1;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   color: #ccc;
@@ -306,7 +278,7 @@ footer { text-align: center; padding: 40px 0; }
 }
 
 /* ==========================================
-   GALLERY STYLING
+   GALLERY SECTION
    ========================================== */
 .photo-grid {
   display: grid;
@@ -328,10 +300,29 @@ footer { text-align: center; padding: 40px 0; }
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
 }
 
-.gallery-item img:hover {
-  transform: scale(1.03);
-}
+/* ==========================================
+   LOCATION & ACCOUNT & FOOTER
+   ========================================== */
+.location-info { text-align: center; width: 100%; }
+.venue { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
+.address { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+.map-buttons { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.chip-button { padding: 6px 12px; background: #1a1a1a; border: 1px solid #333; color: #d88a9a; text-decoration: none; font-size: 0.75rem; border-radius: 20px; }
+.transport { text-align: left; font-size: 0.8rem; color: #aaa; background: #141414; padding: 14px; border-radius: 4px; margin-top: 16px; }
+.transport-row { margin-bottom: 8px; }
+.transport-row:last-child { margin-bottom: 0; }
 
+.account-subtitle { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 16px; }
+.account-list { width: 100%; }
+.account-group { margin-bottom: 10px; background: #141414; border-radius: 4px; overflow: hidden; }
+.account-toggle { width: 100%; padding: 12px 14px; background: none; border: none; color: #fff; display: flex; justify-content: space-between; font-size: 0.85rem; cursor: pointer; }
+.account-content { padding: 0 14px 12px 14px; display: none; }
+.account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
+.copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; cursor: pointer; }
+
+footer { text-align: center; padding: 40px 0; }
+.footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
+
+.reveal { opacity: 1; transform: translateY(0); transition: all 0.8s ease; }
