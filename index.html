@@ -107,7 +107,7 @@
     .cover-photo-wrap { position: relative; width: 100%; border-radius: 4px; overflow: hidden; }
     .cover-photo { width: 100%; display: block; object-fit: cover; }
     
-    /* 💖 메인 사진 글씨 위치 미세 조정 (카톡 환경 고려해 60%로 조금 더 내림) */
+    /* 메인 사진 글씨 위치 (카톡 고려 60%) */
     .cover-poster-title {
       position: absolute; 
       top: 60%; 
@@ -159,7 +159,7 @@
       justify-content: center;
       color: #ccc;
     }
-    .calendar-grid div:nth-child(7n+1) { color: #d88a9a; } /* 일요일 */
+    .calendar-grid div:nth-child(7n+1) { color: #d88a9a; }
     .calendar-grid div.wedding-day {
       background-color: #d88a9a;
       color: #0d0d0d;
@@ -171,6 +171,104 @@
     .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
     .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* 💖 신규 기능 스타일: RSVP (참석 여부) & 실시간 하객스냅 */
+    .feature-box {
+      background: #141414;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 10px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-family: 'Noto Serif KR', serif;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #d88a9a;
+    }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: #ccc;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      margin-bottom: 0;
+      color: #ccc;
+    }
+    .action-btn {
+      width: 100%;
+      background-color: #d88a9a;
+      color: #0d0d0d;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .action-btn:active {
+      opacity: 0.8;
+    }
+
+    /* 실시간 하객스냅 업로드 그리드 */
+    .snap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .snap-item {
+      aspect-ratio: 1;
+      background: #1a1a1a;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .snap-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .snap-upload-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed #444;
+      cursor: pointer;
+      color: #888;
+      font-size: 0.75rem;
+      text-align: center;
+      gap: 4px;
+    }
+    .snap-upload-label:hover {
+      border-color: #d88a9a;
+      color: #d88a9a;
+    }
 
     /* 위치 & 계좌 */
     .location-info { text-align: center; width: 100%; }
@@ -190,7 +288,7 @@
     .account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
     .copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; cursor: pointer; }
 
-    /* 💖 핑크색 복사 완료 토스트 팝업 디자인 */
+    /* 핑크색 복사 완료 토스트 팝업 디자인 */
     .toast-popup {
       position: fixed;
       bottom: 40px;
@@ -222,7 +320,7 @@
 
 <body>
 
-<!-- 💖 1. 오프닝 화면 -->
+<!-- 1. 오프닝 화면 -->
 <div class="opening-overlay" id="openingOverlay">
   <div class="opening-content">
     <div class="opening-couples">
@@ -308,6 +406,74 @@
     </div>
   </section>
 
+  <!-- 💖 1. RSVP (참석 여부 전달) 섹션 추가 -->
+  <section class="section">
+    <div class="section-title">RSVP</div>
+    <div class="account-subtitle">참석 여부를 알려주세요</div>
+    
+    <div class="feature-box">
+      <form id="rsvpForm">
+        <div class="form-group">
+          <label>구분</label>
+          <div class="radio-group">
+            <label><input type="radio" name="side" value="groom" checked> 신랑 측</label>
+            <label><input type="radio" name="side" value="bride"> 신부 측</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>성함</label>
+          <input type="text" class="form-input" id="rsvpName" placeholder="성함을 입력해주세요" required>
+        </div>
+
+        <div class="form-group">
+          <label>연락처</label>
+          <input type="tel" class="form-input" id="rsvpPhone" placeholder="연락처를 입력해주세요 (- 없이)" required>
+        </div>
+
+        <div class="form-group">
+          <label>참석 여부</label>
+          <div class="radio-group">
+            <label><input type="radio" name="attendance" value="yes" checked> 참석합니다</label>
+            <label><input type="radio" name="attendance" value="no"> 아쉽지만 불참합니다</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>식사 여부</label>
+          <select class="form-select" id="rsvpMeal">
+            <option value="yes">식사 예정 (예식장)</option>
+            <option value="no">식사 안 함</option>
+            <option value="maybe">미정</option>
+          </select>
+        </div>
+
+        <button type="submit" class="action-btn">참석 의사 전달하기</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 💖 2. 실시간 하객스냅 섹션 추가 -->
+  <section class="section">
+    <div class="section-title">GUEST SNAP</div>
+    <div class="account-subtitle">실시간 하객스냅 사진첩</div>
+    
+    <div class="feature-box">
+      <div style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 14px;">
+        결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 공유해주세요!
+      </div>
+      
+      <div class="snap-grid" id="snapGrid">
+        <!-- 업로드 버튼 겸용 격자 -->
+        <label class="snap-item snap-upload-label">
+          <span style="font-size: 1.2rem;">+</span>
+          <span>사진 올리기</span>
+          <input type="file" id="snapInput" accept="image/*" style="display: none;">
+        </label>
+      </div>
+    </div>
+  </section>
+
   <!-- LOCATION SECTION -->
   <section class="section">
     <div class="section-title">LOCATION</div>
@@ -378,7 +544,7 @@
   </footer>
 </main>
 
-<!-- 💖 복사 완료 핑크색 토스트 팝업 요소 -->
+<!-- 복사 완료 핑크색 토스트 팝업 요소 -->
 <div class="toast-popup" id="toastPopup">계좌번호가 복사되었습니다.</div>
 
 <!-- 스크립트 -->
@@ -435,6 +601,17 @@
 
   // 4. 카카오톡 인앱 브라우저 호환 핑크색 토스트 팝업 복사 기능
   let toastTimer;
+  function showToast(message) {
+    const toast = document.getElementById('toastPopup');
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
+  }
+
   document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const text = this.getAttribute('data-copy');
@@ -446,14 +623,38 @@
       document.execCommand('copy');
       document.body.removeChild(t);
 
-      const toast = document.getElementById('toastPopup');
-      toast.classList.add('show');
-      
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
+      showToast('계좌번호가 복사되었습니다.');
     });
+  });
+
+  // 5. RSVP 전송 이벤트 처리
+  document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('rsvpName').value;
+    showToast(`${name}님의 참석 여부가 전달되었습니다. 감사합니다!`);
+    this.reset();
+  });
+
+  // 6. 실시간 하객스냅 사진 업로드 및 미리보기 처리
+  document.getElementById('snapInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const snapGrid = document.getElementById('snapGrid');
+      const uploadLabel = snapGrid.firstElementChild; // 첫 번째 자리가 업로드 버튼
+
+      // 새로운 사진 아이템 생성
+      const newItem = document.createElement('div');
+      newItem.className = 'snap-item';
+      newItem.innerHTML = `<img src="${event.target.result}" alt="하객스냅 사진">`;
+
+      // 업로드 버튼 앞에 새 사진 삽입
+      snapGrid.insertBefore(newItem, uploadLabel);
+      showToast('사진이 등록되었습니다!');
+    };
+    reader.readAsDataURL(file);
   });
 </script>
 </body>
