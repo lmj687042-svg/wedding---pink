@@ -107,10 +107,10 @@
     .cover-photo-wrap { position: relative; width: 100%; border-radius: 4px; overflow: hidden; }
     .cover-photo { width: 100%; display: block; object-fit: cover; }
     
-    /* 💖 메인 사진 글씨 위치 조절 (살짝 아래로 내려 얼굴 가림 방지) */
+    /* 💖 메인 사진 글씨 위치 미세 조정 (카톡 환경 고려해 60%로 조금 더 내림) */
     .cover-poster-title {
       position: absolute; 
-      top: 56%; /* 기존 50%에서 아래로 살짝 내림 */
+      top: 60%; 
       left: 50%; 
       transform: translate(-50%, -50%);
       width: 90%; 
@@ -167,7 +167,7 @@
       font-weight: bold;
     }
 
-    /* 💖 갤러리 (사진 2개만 출력) */
+    /* 갤러리 (사진 2개) */
     .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
     .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -299,7 +299,7 @@
     </div>
   </section>
 
-  <!-- GALLERY SECTION (사진 2개만 배치) -->
+  <!-- GALLERY SECTION (사진 2개) -->
   <section class="section">
     <div class="section-title">GALLERY</div>
     <div class="photo-grid">
