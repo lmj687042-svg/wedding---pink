@@ -1,8 +1,8 @@
+
 /* ==========================================
-   웨딩 데이터 설정 (여기서 모든 정보 수정 가능)
+   웨딩 데이터 설정
    ========================================== */
 const weddingData = {
-  // 신랑/신부 정보
   groom: {
     name: "용재",
     fullName: "이용재",
@@ -14,7 +14,6 @@ const weddingData = {
     parents: "이철수 · 박순자"
   },
 
-  // 예식 일정 (2027년 1월 2일 토요일 12:00)
   date: {
     year: 2027,
     month: 1,
@@ -25,7 +24,6 @@ const weddingData = {
     coverDateText: "2027.01.02 토요일 오후 12:00"
   },
 
-  // 예식장 정보
   venue: {
     name: "아펠가모 선릉",
     subkicker: "AT APELGAMO SEONLLEUNG",
@@ -39,7 +37,6 @@ const weddingData = {
     tmapUrl: "https://tmap.co.kr"
   },
 
-  // 갤러리 이미지 경로 목록
   galleryImages: [
     "images/hero/1.jpg",
     "images/hero/2.jpg",
@@ -54,10 +51,13 @@ const weddingData = {
    페이지 로드 시 초기화 실행
    ========================================== */
 document.addEventListener("DOMContentLoaded", function () {
+  // 0. 오프닝 화면 버튼 이벤트
+  initOpeningOverlay();
+
   // 1. 첫 화면 및 텍스트 데이터 바인딩
   initPageData();
 
-  // 2. 캘린더 생성 (결혼식 날짜 하트 표기)
+  // 2. 캘린더 생성
   renderCalendar(weddingData.date.year, weddingData.date.month, weddingData.date.day);
 
   // 3. 갤러리 이미지 및 모달 초기화
@@ -69,14 +69,34 @@ document.addEventListener("DOMContentLoaded", function () {
   // 5. 계좌번호 복사 기능
   initCopyButtons();
 
-  // 6. 스크롤 애니메이션 (Reveal)
+  // 6. 스크롤 애니메이션
   initScrollAnimation();
 });
+
+/* ==========================================
+   0. 오프닝 랜딩 이벤트 (초대장 열기 버튼)
+   ========================================== */
+function initOpeningOverlay() {
+  const openBtn = document.getElementById("openBtn");
+  const overlay = document.getElementById("openingOverlay");
+
+  if (openBtn && overlay) {
+    openBtn.addEventListener("click", function () {
+      overlay.classList.add("fade-out");
+      // 스크롤 맨 위로 보장
+      window.scrollTo(0, 0);
+    });
+  }
+}
 
 /* ==========================================
    1. 첫 화면 및 텍스트 데이터 바인딩 함수
    ========================================== */
 function initPageData() {
+  // 오프닝 화면 신랑 신부 이름
+  setText("openingGroom", weddingData.groom.fullName);
+  setText("openingBride", weddingData.bride.fullName);
+
   // 커버 / 첫 화면 영역
   setText("coverKicker", weddingData.date.headerDateText);
   setText("coverSubkicker", weddingData.venue.subkicker);
@@ -113,7 +133,6 @@ function renderCalendar(year, month, weddingDay) {
 
   grid.innerHTML = "";
 
-  // 요일 헤더 (일 ~ 토)
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   daysOfWeek.forEach((day, idx) => {
     const dayHeader = document.createElement("div");
@@ -124,17 +143,14 @@ function renderCalendar(year, month, weddingDay) {
     grid.appendChild(dayHeader);
   });
 
-  // 해당 월의 1일 시작 요일 및 총 일수
   const firstDayIndex = new Date(year, month - 1, 1).getDay();
   const lastDate = new Date(year, month, 0).getDate();
 
-  // 빈 셀 생성
   for (let i = 0; i < firstDayIndex; i++) {
     const emptyCell = document.createElement("div");
     grid.appendChild(emptyCell);
   }
 
-  // 날짜 셀 생성
   for (let day = 1; day <= lastDate; day++) {
     const dateCell = document.createElement("div");
     dateCell.classList.add("cal-day");
@@ -143,7 +159,6 @@ function renderCalendar(year, month, weddingDay) {
     if (currentDayOfWeek === 0) dateCell.classList.add("sunday");
     if (currentDayOfWeek === 6) dateCell.classList.add("saturday");
 
-    // 결혼식 날짜인 경우 하트(♥) 표기
     if (day === weddingDay) {
       dateCell.classList.add("wedding-day");
       dateCell.innerHTML = `<span class="heart-mark">♥</span><span class="day-num">${day}</span>`;
@@ -168,7 +183,6 @@ function initGallery() {
 
   if (!galleryGrid) return;
 
-  // 갤러리 이미지 동적 생성
   galleryGrid.innerHTML = "";
   weddingData.galleryImages.forEach((src, idx) => {
     const img = document.createElement("img");
@@ -178,7 +192,6 @@ function initGallery() {
     galleryGrid.appendChild(img);
   });
 
-  // 모달 제어 버튼
   const closeBtn = document.querySelector(".modal-close");
   const prevBtn = document.querySelector(".modal-prev");
   const nextBtn = document.querySelector(".modal-next");
