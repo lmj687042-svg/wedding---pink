@@ -6,12 +6,12 @@ const weddingData = {
   groom: {
     name: "용재",
     fullName: "이용재",
-    parents: "이종수 · 김영희"
+    parents: "이강목 · 임남영"
   },
   bride: {
     name: "민진",
     fullName: "이민진",
-    parents: "이철수 · 박순자"
+    parents: "이만수 · 조은영"
   },
 
   date: {
@@ -19,7 +19,7 @@ const weddingData = {
     month: 1,
     day: 2,
     weekday: "토요일",
-    time: "오후 12:00",
+    time: "오전 11:00",
     headerDateText: "JANUARY 02, 2027 SAT 12:00 PM",
     coverDateText: "2027.01.02 토요일 오후 12:00"
   },
