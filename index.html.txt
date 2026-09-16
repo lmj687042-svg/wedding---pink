@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ff4500">
+  <title>OUR WEDDING</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<main class="page">
+  <header class="top-header">
+    <div>The Wedding of</div>
+    <div class="menu-icon">☰</div>
+  </header>
+
+  <!-- COVER HEADER SECTION -->
+  <section class="cover">
+    <div class="cover-hero-header">
+      <div class="cover-kicker">You're invited</div>
+      <h1 class="cover-title">
+        <span id="groomName">Groom</span><br>&<br><span id="brideName">Bride</span>
+      </h1>
+      <div class="cover-info">
+        <div id="coverDate">2026.12.31 목요일 오후 12시</div>
+        <div id="coverVenue">예식장 이름</div>
+      </div>
+    </div>
+    <div class="cover-photo-wrap">
+      <img class="cover-photo" src="images/hero/1.jpg" alt="메인 사진">
+    </div>
+  </section>
+
+  <!-- INTRO SECTION -->
+  <section class="section">
+    <div class="intro-text-block reveal">
+      <h2>Join us<br>for our wedding</h2>
+      
+      <div class="family-info">
+        <div>아버님 · 어머님 <span class="role">의 아들</span> <strong id="groomFullName">신랑 이름</strong></div>
+        <div>아버님 · 어머님 <span class="role">의 딸</span> <strong id="brideFullName">신부 이름</strong></div>
+      </div>
+
+      <div class="section-title">INVITATION</div>
+      <div class="story-intro">
+        서로가 마주 보며 다져온 사랑을<br>
+        이제 함께 한 곳을 바라보며 걸어가려 합니다.<br><br>
+        저희 두 사람의 새로운 시작을<br>
+        함께 축복해 주시면 더없는 기쁨으로 간직하겠습니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDAR SECTION -->
+  <section class="section">
+    <div class="date-lead reveal">
+      <div class="big-date" id="dateLead">2026.12.31</div>
+      <div class="weekday" id="weekday">목요일 오후 12시</div>
+    </div>
+
+    <div class="calendar reveal">
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTION -->
+  <section class="section">
+    <div class="section-title">GALLERY</div>
+    <div class="photo-grid" id="gallery"></div>
+  </section>
+
+  <!-- LOCATION SECTION -->
+  <section class="section">
+    <div class="section-title">LOCATION</div>
+
+    <div class="location-info reveal">
+      <div class="venue" id="venueName">예식장 이름</div>
+      <div class="address" id="venueAddress">예식장 주소 층/홀 정보<br>02-000-0000</div>
+
+      <div class="map-buttons">
+        <a class="chip-button" id="naverMap" href="#" target="_blank">네이버 지도 ↗</a>
+        <a class="chip-button" id="kakaoMap" href="#" target="_blank">카카오맵 ↗</a>
+        <a class="chip-button" id="tmap" href="#" target="_blank">티맵 ↗</a>
+      </div>
+
+      <div class="transport">
+        <div class="transport-row">
+          <strong>[지하철]</strong>
+          <span id="subway">지하철 이용 안내 정보가 입력됩니다.</span>
+        </div>
+        <div class="transport-row">
+          <strong>[버스]</strong>
+          <span id="bus">버스 이용 안내 정보가 입력됩니다.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCOUNT SECTION -->
+  <section class="section">
+    <div class="section-title">ACCOUNT</div>
+    <div style="color: var(--gray-text); font-size: 13px; margin-bottom: 30px;">마음 전하실 곳</div>
+
+    <div class="account-list">
+      <div class="account-group">
+        <button class="account-toggle">
+          <span>신랑측 계좌번호</span><span>∨</span>
+        </button>
+        <div class="account-content">
+          <div class="account-row">
+            <span>OO은행 000-0000-0000 (신랑)</span>
+            <button class="copy-btn" data-copy="000-0000-0000">복사</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-group">
+        <button class="account-toggle">
+          <span>신부측 계좌번호</span><span>∨</span>
+        </button>
+        <div class="account-content">
+          <div class="account-row">
+            <span>OO은행 000-0000-0000 (신부)</span>
+            <button class="copy-btn" data-copy="000-0000-0000">복사</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-mark">THANK YOU</div>
+  </footer>
+
+</main>
+
+<!-- MODAL & TOAST -->
+<div class="modal" id="photoModal" aria-hidden="true">
+  <button class="modal-close">×</button>
+  <button class="modal-prev">‹</button>
+  <img id="modalImage" src="" alt="">
+  <button class="modal-next">›</button>
+  <div class="modal-count" id="modalCount"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
