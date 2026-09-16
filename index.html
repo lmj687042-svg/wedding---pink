@@ -654,18 +654,18 @@
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드 (드라이브 직행 및 튕김 방지 압축 적용)
+  // 6. 실시간 하객스냅 사진 업로드 (드라이브 직행 최적화)
   document.getElementById('snapInput').addEventListener('change', async function(e) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    showToast(`총 ${files.length}장의 사진을 안전하게 업로드하는 중입니다...`);
+    showToast(`총 ${files.length}장의 사진을 드라이브로 전송 중입니다...`);
 
     for (let i = 0; i < files.length; i++) {
       await compressAndUpload(files[i]);
     }
 
-    showToast('모든 사진이 안전하게 등록되었습니다!');
+    showToast('모든 사진이 드라이브에 안전하게 등록되었습니다!');
     document.getElementById('snapInput').value = '';
   });
 
@@ -679,8 +679,8 @@
           let width = img.width;
           let height = img.height;
 
-          const MAX_WIDTH = 1200;
-          const MAX_HEIGHT = 1200;
+          const MAX_WIDTH = 1000;
+          const MAX_HEIGHT = 1000;
           if (width > height) {
             if (width > MAX_WIDTH) {
               height *= MAX_WIDTH / width;
@@ -698,19 +698,18 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
 
           const payload = {
-            type: "guest_snap", // 사진 전용 플래그
             photoData: compressedDataUrl,
             photoName: "snap_" + Date.now() + "_" + (file.name || "photo.jpg"),
             photoType: "image/jpeg"
           };
 
+          // 이미지 전송 요청
           fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
-            cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           })
