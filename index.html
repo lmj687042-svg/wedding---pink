@@ -87,7 +87,7 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
-    /* 커버 */
+    /* 커버 (첫 화면 분홍색 포스터) */
     .cover {
       width: 100%; padding: 70px 24px 40px 24px;
       background-color: #d88a9a; color: #111111; text-align: center;
@@ -171,7 +171,7 @@
     .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* RSVP 배너 */
+    /* 공통 박스 */
     .rsvp-banner-box {
       background: #141414;
       border-radius: 8px;
@@ -284,7 +284,7 @@
   </div>
 </div>
 
-<!-- 2. RSVP 팝업창 (모달) -->
+<!-- 2. RSVP 팝업창 (모달) - 오프닝 직후 바로 뜸 -->
 <div class="modal-overlay" id="rsvpModal">
   <div class="modal-content">
     <button class="modal-close" id="modalCloseBtn">&times;</button>
@@ -339,8 +339,8 @@
     <button class="menu-icon" aria-label="메뉴">☰</button>
   </header>
 
-  <!-- COVER SECTION -->
-  <section class="cover">
+  <!-- COVER SECTION (첫 화면 분홍색 포스터) -->
+  <section class="cover" id="coverSection">
     <div class="cover-hero-header">
       <div class="cover-kicker">JANUARY 02, 2027 SAT 11:00 AM</div>
       <div class="cover-subkicker">AT APELGAMO SEONLLEUNG</div>
@@ -405,14 +405,14 @@
     </div>
   </section>
 
-  <!-- RSVP 팝업 호출 배너 섹션 -->
+  <!-- 본문 내 RSVP 다시 열기 버튼 섹션 -->
   <section class="section">
     <div class="section-title">RSVP</div>
-    <div class="account-subtitle">참석 여부 전달</div>
+    <div class="account-subtitle">참석 여부 변경 및 확인</div>
     
     <div class="rsvp-banner-box">
       <div class="rsvp-desc">
-        소중한 발걸음을 해주시는 분들을 위해<br>참석 여부를 미리 알려주세요.
+        참석 여부를 다시 수정하시거나<br>아직 전달하지 못하셨다면 아래 버튼을 눌러주세요.
       </div>
       <button class="action-btn" id="openRsvpModalBtn">참석 여부 작성하기</button>
     </div>
@@ -513,12 +513,16 @@
 
 <!-- 스크립트 -->
 <script>
-  // 구글 스프레드시트 웹 앱 URL
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwm9a2AWagYZ_LDis-qPsx6S6QL98E3j9BxjyrNUSl9o0xdk0dKK8g7BM3Y-Fnc4oMg/exec";
 
-  // 1. 오프닝 닫기
+  // 1. 오프닝 닫기 및 RSVP 팝업 동시 띄우기
   document.getElementById('openBtn').addEventListener('click', function() {
     document.getElementById('openingOverlay').classList.add('fade-out');
+    
+    // 오프닝이 닫힌 직후(약 0.3초 뒤) RSVP 팝업창 띄우기
+    setTimeout(() => {
+      document.getElementById('rsvpModal').classList.add('show');
+    }, 300);
   });
 
   // 2. 캘린더 동적 생성 (2027년 1월)
@@ -605,7 +609,7 @@
     if (e.target === rsvpModal) rsvpModal.classList.remove('show');
   });
 
-  // RSVP 제출 처리 (구글 스프레드시트 연동)
+  // RSVP 제출 처리 (구글 스프레드시트 연동 + 첫 화면으로 스크롤 이동)
   document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('rsvpName').value;
@@ -628,21 +632,25 @@
     })
     .then(response => response.json())
     .then(data => {
-      rsvpModal.classList.remove('show');
-      showToast(`${name}님의 참석 여부가 안전하게 전달되었습니다!`);
-      this.reset();
+      completeRsvpSubmission(name);
     })
     .catch(error => {
-      // CORS 이슈로 에러가 나더라도 데이터가 시트에 정상 적재되는 경우가 많아 성공으로 처리합니다.
-      rsvpModal.classList.remove('show');
-      showToast(`${name}님의 참석 여부가 전달되었습니다!`);
-      this.reset();
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = '전송하기';
+      completeRsvpSubmission(name);
     });
   });
+
+  function completeRsvpSubmission(name) {
+    rsvpModal.classList.remove('show');
+    showToast(`${name}님의 참석 여부가 안전하게 전달되었습니다!`);
+    document.getElementById('rsvpForm').reset();
+    
+    const submitBtn = document.getElementById('rsvpSubmitBtn');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '전송하기';
+
+    // 전송 완료 후 첫 화면(분홍색 포스터 커버)으로 부드럽게 스크롤 이동
+    document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
+  }
 
   // 6. 실시간 하객스냅 사진 업로드
   document.getElementById('snapInput').addEventListener('change', function(e) {
