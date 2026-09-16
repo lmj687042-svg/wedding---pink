@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -513,7 +514,8 @@
 
 <!-- 스크립트 -->
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_B27pH2ovpQbdUu9fSXWLU48ERH2kqcJeqxixZZ-l0sEv2yf3IG3vdMWhhpHoG3o4/exec";
+  // 새로 발급받은 구글 앱스 스크립트 웹 앱 URL 적용 완료
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzoYPax2lxrKndBYdRY7Ug_8X-94Tc7LD0atpPazEgSPwoEnMvlvpel-33LTuhWro6u/exec";
 
   // 1. 오프닝 닫기 및 RSVP 팝업 동시 띄우기
   document.getElementById('openBtn').addEventListener('click', function() {
@@ -608,7 +610,7 @@
     if (e.target === rsvpModal) rsvpModal.classList.remove('show');
   });
 
-  // RSVP 제출 처리 (구글 스프레드시트 연동 + 첫 화면으로 스크롤 이동)
+  // RSVP 제출 처리 (JSON 방식 적용)
   document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('rsvpName').value;
@@ -617,17 +619,17 @@
     submitBtn.disabled = true;
     submitBtn.textContent = '전송 중...';
 
-    const formData = new URLSearchParams({
+    const payload = {
       side: document.querySelector('input[name="side"]:checked').value,
       name: name,
       phone: document.getElementById('rsvpPhone').value,
       attendance: document.querySelector('input[name="attendance"]:checked').value,
       meal: document.getElementById('rsvpMeal').value
-    });
+    };
 
     fetch(SCRIPT_URL, {
       method: 'POST',
-      body: formData
+      body: JSON.stringify(payload)
     })
     .then(response => response.json())
     .then(data => {
@@ -650,7 +652,7 @@
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드 (구글 드라이브 연동)
+  // 6. 실시간 하객스냅 사진 업로드 (JSON 방식 적용 - 사진만 단독 업로드 가능)
   document.getElementById('snapInput').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -661,26 +663,26 @@
     reader.onload = function(event) {
       const base64Data = event.target.result;
 
-      // 구글 드라이브로 사진 전송 데이터 구성
-      const formData = new URLSearchParams({
+      const payload = {
         photoData: base64Data,
         photoName: file.name,
         photoType: file.type
-      });
+      };
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        body: formData
+        body: JSON.stringify(payload)
       })
       .then(response => response.json())
       .then(data => {
         addPhotoToGrid(base64Data);
         showToast('하객스냅 사진이 안전하게 등록되었습니다!');
+        document.getElementById('snapInput').value = '';
       })
       .catch(error => {
-        // CORS 에러가 나더라도 드라이브에 정상 저장되므로 화면에 반영
         addPhotoToGrid(base64Data);
         showToast('하객스냅 사진이 등록되었습니다!');
+        document.getElementById('snapInput').value = '';
       });
     };
     reader.readAsDataURL(file);
