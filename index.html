@@ -24,6 +24,21 @@
 
 <body>
 
+<!-- 💖 1. 오프닝 화면 (검정 배경 + 핑크 신랑♥신부 + 핑크 하트 버튼) -->
+<div class="opening-overlay" id="openingOverlay">
+  <div class="opening-content">
+    <div class="opening-couples" id="openingCouples">
+      <span id="openingGroom">이용재</span>
+      <span class="opening-heart">♥</span>
+      <span id="openingBride">이민진</span>
+    </div>
+    <button class="opening-btn" id="openBtn">
+      <span class="btn-heart">♥</span>
+      <span>초대장 열기</span>
+    </button>
+  </div>
+</div>
+
 <main class="page">
   <!-- 상단 헤더 -->
   <header class="top-header">
@@ -166,7 +181,7 @@
   </footer>
 </main>
 
-<!-- 갤러리 이미지 클릭 시 뜨는 모달 팝업 레이어 -->
+<!-- 갤러리 모달 팝업 레이어 -->
 <div class="photo-modal" id="photoModal" aria-hidden="true" style="display: none;">
   <span class="modal-close">&times;</span>
   <button class="modal-prev" aria-label="이전 이미지">&lt;</button>
