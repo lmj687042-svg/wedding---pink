@@ -14,8 +14,8 @@
     "subway": "2호선 / 수인분당선 선릉역 4번 출구에서 도보 3분",
     "bus": "선릉역 정류장 하차 (간선: 146, 341, 360 / 지선: 4412)",
     "parking": "건물 내 지하 주차장 이용 (하객 2시간 무료 주차)",
-    "kakao": "https://map.kakao.com/",
-    "naver": "https://map.naver.com/",
+    "kakao": "https://kko.to/M3hHQ5aIwQ",
+    "naver": "https://naver.me/GZDPBDgT",
     "tmap": "https://tmap.co.kr/"
   },
 
