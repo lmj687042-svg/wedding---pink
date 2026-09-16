@@ -248,3 +248,90 @@ footer { text-align: center; padding: 40px 0; }
 
 /* 스크롤 시 등장하는 클래스 */
 .reveal { opacity: 1; transform: translateY(0); transition: all 0.8s ease; }
+
+/* ==========================================
+   CALENDAR STYLING
+   ========================================== */
+.calendar-wrap {
+  width: 100%;
+  background: #141414;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.calendar-header-month {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.calendar-table {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+.cal-day-name {
+  padding-bottom: 8px;
+  font-weight: 600;
+  color: #777;
+  font-size: 0.75rem;
+}
+
+.cal-day-name.sun { color: #d88a9a; }
+.cal-day-name.sat { color: #8ab4f8; }
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  border-radius: 50%;
+}
+
+.cal-day.sun { color: #d88a9a; }
+.cal-day.sat { color: #aaa; }
+
+.highlight-day {
+  background-color: #d88a9a !important;
+  color: #0d0d0d !important;
+  font-weight: bold;
+}
+
+/* ==========================================
+   GALLERY STYLING
+   ========================================== */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.gallery-item {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+  transform: scale(1.03);
+}
+
