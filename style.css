@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: #0d0d0d; /* 맨 뒷배경 검정 */
+  background-color: #0d0d0d;
   color: #f1f1f1;
   font-family: 'Noto Serif KR', serif;
   line-height: 1.6;
@@ -27,8 +27,85 @@ body {
 }
 
 /* ==========================================
-   TOP HEADER
+   💖 OPENING OVERLAY (초대장 열기 랜딩 화면)
    ========================================== */
+.opening-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0d0d0d;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.opening-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.opening-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.opening-couples {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #d88a9a;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+}
+
+.opening-heart {
+  color: #d88a9a;
+  margin: 0 8px;
+  font-size: 1.4rem;
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+}
+
+/* 💗 핑크색 하트 버튼 */
+.opening-btn {
+  background-color: #d88a9a;
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(216, 138, 154, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.opening-btn:active {
+  transform: scale(0.96);
+  background-color: #c57787;
+}
+
+.btn-heart {
+  font-size: 1.1rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* TOP HEADER */
 .top-header {
   position: sticky;
   top: 0;
@@ -58,13 +135,11 @@ body {
   cursor: pointer;
 }
 
-/* ==========================================
-   COVER SECTION (핑크 포스터 카드)
-   ========================================== */
+/* COVER SECTION */
 .cover {
   margin: 16px;
   padding: 24px 16px 20px 16px;
-  background-color: #d88a9a; /* 인디핑크 배경 */
+  background-color: #d88a9a;
   border-radius: 4px;
   color: #111111;
   text-align: center;
@@ -91,7 +166,7 @@ body {
 }
 
 .cover-photo-wrap {
-  position: relative;
+  position: relative !important;
   width: 100%;
   border-radius: 2px;
   overflow: hidden;
@@ -105,22 +180,22 @@ body {
   filter: brightness(85%) contrast(110%);
 }
 
-/* ✍️ 포스터 손글씨 타이틀 */
 .cover-poster-title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  text-align: center;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 90% !important;
+  text-align: center !important;
   pointer-events: none;
   
-  font-family: 'Caveat', cursive;
-  font-size: 3.1rem;
-  font-weight: 700;
-  line-height: 1.02;
-  color: #ffffff;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+  font-family: 'Caveat', 'Comic Sans MS', cursive !important;
+  font-size: 3.1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.02 !important;
+  color: #ffffff !important;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5) !important;
+  z-index: 10 !important;
 }
 
 .cover-poster-title span {
@@ -129,7 +204,7 @@ body {
 }
 
 .cover-poster-title .last-word {
-  font-size: 3.5rem;
+  font-size: 3.5rem !important;
   margin-top: 2px;
 }
 
@@ -141,9 +216,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* ==========================================
-   SECTIONS GENERAL
-   ========================================== */
+/* SECTIONS GENERAL */
 .section {
   padding: 48px 24px;
   border-bottom: 1px solid #1a1a1a;
@@ -159,9 +232,7 @@ body {
 }
 
 /* INVITATION */
-.intro-text-block {
-  text-align: center;
-}
+.intro-text-block { text-align: center; }
 
 .join-title {
   font-family: 'Cormorant Garamond', serif;
@@ -179,14 +250,8 @@ body {
   line-height: 1.8;
 }
 
-.family-info .role {
-  font-size: 0.75rem;
-  color: #777;
-}
-
-.family-info strong {
-  color: #fff;
-}
+.family-info .role { font-size: 0.75rem; color: #777; }
+.family-info strong { color: #fff; }
 
 .story-intro {
   font-size: 0.9rem;
@@ -194,30 +259,60 @@ body {
   line-height: 1.9;
 }
 
-/* CALENDAR */
-.date-lead {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.big-date {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.2rem;
-  color: #ffffff;
-}
-
-.weekday {
-  font-size: 0.85rem;
-  color: #888;
-}
+/* CALENDAR STYLES */
+.date-lead { text-align: center; margin-bottom: 24px; }
+.big-date { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: #ffffff; }
+.weekday { font-size: 0.85rem; color: #888; }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: 8px 4px;
   text-align: center;
   font-size: 0.85rem;
   color: #aaa;
+  margin-top: 10px;
+}
+
+.cal-header {
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #222;
+  font-size: 0.8rem;
+}
+
+.cal-day {
+  padding: 10px 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sunday { color: #e57373; }
+.saturday { color: #64b5f6; }
+
+/* 💖 결혼식 날짜 하트 스타일 */
+.wedding-day {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.wedding-day .heart-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: #d88a9a;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.wedding-day .day-num {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
 }
 
 /* GALLERY */
@@ -236,21 +331,9 @@ body {
 }
 
 /* LOCATION & BUTTONS */
-.location-info {
-  text-align: center;
-}
-
-.venue {
-  font-size: 1.2rem;
-  color: #fff;
-  margin-bottom: 6px;
-}
-
-.address {
-  font-size: 0.85rem;
-  color: #888;
-  margin-bottom: 20px;
-}
+.location-info { text-align: center; }
+.venue { font-size: 1.2rem; color: #fff; margin-bottom: 6px; }
+.address { font-size: 0.85rem; color: #888; margin-bottom: 20px; }
 
 .map-buttons {
   display: flex;
@@ -278,88 +361,23 @@ body {
   border-radius: 4px;
 }
 
-.transport-row {
-  margin-bottom: 10px;
-}
-
-.transport-row strong {
-  color: #d88a9a;
-  display: block;
-  margin-bottom: 2px;
-}
+.transport-row { margin-bottom: 10px; }
+.transport-row strong { color: #d88a9a; display: block; margin-bottom: 2px; }
 
 /* ACCOUNT */
-.account-subtitle {
-  text-align: center;
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.account-group {
-  margin-bottom: 12px;
-  background: #141414;
-  border-radius: 4px;
-}
-
+.account-subtitle { text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+.account-group { margin-bottom: 12px; background: #141414; border-radius: 4px; }
 .account-toggle {
-  width: 100%;
-  padding: 14px 16px;
-  background: none;
-  border: none;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  cursor: pointer;
+  width: 100%; padding: 14px 16px; background: none; border: none;
+  color: #fff; display: flex; justify-content: space-between; font-size: 0.9rem; cursor: pointer;
 }
+.account-content { padding: 0 16px 14px 16px; display: none; }
+.account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; }
+.copy-btn { padding: 4px 10px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.75rem; border-radius: 2px; cursor: pointer; }
 
-.account-content {
-  padding: 0 16px 14px 16px;
-  display: none;
-}
-
-.account-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: #aaa;
-}
-
-.copy-btn {
-  padding: 4px 10px;
-  background: #222;
-  border: 1px solid #444;
-  color: #fff;
-  font-size: 0.75rem;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 40px 0 20px 0;
-}
-
-.footer-mark {
-  font-family: 'Cormorant Garamond', serif;
-  letter-spacing: 4px;
-  font-size: 0.9rem;
-  color: #444;
-}
-
-/* MODAL & TOAST */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-}
+/* FOOTER & TOAST & MODAL */
+footer { text-align: center; padding: 40px 0 20px 0; }
+.footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.9rem; color: #444; }
 
 .toast {
   position: fixed;
@@ -373,4 +391,29 @@ footer {
   font-size: 0.85rem;
   display: none;
   z-index: 2000;
+}
+
+.photo-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.9);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 2000;
+}
+.modal-content { max-width: 90%; max-height: 80vh; border-radius: 4px; }
+.modal-close { position: absolute; top: 20px; right: 25px; font-size: 30px; color: #fff; cursor: pointer; }
+.modal-prev, .modal-next { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; padding: 10px; }
+.modal-prev { left: 10px; }
+.modal-next { right: 10px; }
+.modal-count { position: absolute; bottom: 20px; color: #aaa; font-size: 0.85rem; }
+
+/* REVEAL ANIMATION */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
