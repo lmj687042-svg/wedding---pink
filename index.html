@@ -106,10 +106,20 @@
     .cover-subkicker { font-family: 'Cormorant Garamond', serif; font-size: 0.65rem; letter-spacing: 1.5px; margin-top: 2px; }
     .cover-photo-wrap { position: relative; width: 100%; border-radius: 4px; overflow: hidden; }
     .cover-photo { width: 100%; display: block; object-fit: cover; }
+    
+    /* 💖 메인 사진 글씨 위치 조절 (살짝 아래로 내려 얼굴 가림 방지) */
     .cover-poster-title {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 90%; text-align: center; font-family: 'Caveat', cursive;
-      font-size: 2.8rem; font-weight: 700; line-height: 1.05; color: #ffffff;
+      position: absolute; 
+      top: 56%; /* 기존 50%에서 아래로 살짝 내림 */
+      left: 50%; 
+      transform: translate(-50%, -50%);
+      width: 90%; 
+      text-align: center; 
+      font-family: 'Caveat', cursive;
+      font-size: 2.8rem; 
+      font-weight: 700; 
+      line-height: 1.05; 
+      color: #ffffff;
       text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
     }
     .cover-info { margin-top: 14px; font-size: 0.85rem; font-weight: 600; }
@@ -157,7 +167,7 @@
       font-weight: bold;
     }
 
-    /* 갤러리 */
+    /* 💖 갤러리 (사진 2개만 출력) */
     .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
     .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -289,7 +299,7 @@
     </div>
   </section>
 
-  <!-- GALLERY SECTION -->
+  <!-- GALLERY SECTION (사진 2개만 배치) -->
   <section class="section">
     <div class="section-title">GALLERY</div>
     <div class="photo-grid">
@@ -423,20 +433,26 @@
     });
   });
 
-  // 4. 핑크색 토스트 팝업과 계좌 복사 기능
+  // 4. 카카오톡 인앱 브라우저 호환 핑크색 토스트 팝업 복사 기능
   let toastTimer;
   document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const text = this.getAttribute('data-copy');
-      navigator.clipboard.writeText(text).then(() => {
-        const toast = document.getElementById('toastPopup');
-        toast.classList.add('show');
-        
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-          toast.classList.remove('show');
-        }, 2000);
-      });
+      
+      const t = document.createElement("textarea");
+      t.value = text;
+      document.body.appendChild(t);
+      t.select();
+      document.execCommand('copy');
+      document.body.removeChild(t);
+
+      const toast = document.getElementById('toastPopup');
+      toast.classList.add('show');
+      
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
     });
   });
 </script>
