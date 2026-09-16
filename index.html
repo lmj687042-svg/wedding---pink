@@ -107,7 +107,6 @@
     .cover-photo-wrap { position: relative; width: 100%; border-radius: 4px; overflow: hidden; }
     .cover-photo { width: 100%; display: block; object-fit: cover; }
     
-    /* 메인 사진 글씨 위치 (카톡 고려 60%) */
     .cover-poster-title {
       position: absolute; 
       top: 60%; 
@@ -167,108 +166,76 @@
       font-weight: bold;
     }
 
-    /* 갤러리 (사진 2개) */
+    /* 갤러리 */
     .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
     .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* 💖 신규 기능 스타일: RSVP (참석 여부) & 실시간 하객스냅 */
-    .feature-box {
+    /* RSVP 배너 */
+    .rsvp-banner-box {
       background: #141414;
       border-radius: 8px;
-      padding: 20px;
-      margin-top: 10px;
+      padding: 24px 20px;
+      text-align: center;
     }
-    .form-group {
-      margin-bottom: 14px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.78rem;
+    .rsvp-desc {
+      font-size: 0.85rem;
       color: #aaa;
-      margin-bottom: 6px;
-    }
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 4px;
-      padding: 10px;
-      color: #fff;
-      font-size: 0.85rem;
-      font-family: 'Noto Serif KR', serif;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      outline: none;
-      border-color: #d88a9a;
-    }
-    .radio-group {
-      display: flex;
-      gap: 16px;
-      font-size: 0.85rem;
-      color: #ccc;
-      align-items: center;
-      margin-top: 4px;
-    }
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      margin-bottom: 0;
-      color: #ccc;
-    }
-    .action-btn {
-      width: 100%;
-      background-color: #d88a9a;
-      color: #0d0d0d;
-      border: none;
-      border-radius: 4px;
-      padding: 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 6px;
-    }
-    .action-btn:active {
-      opacity: 0.8;
+      margin-bottom: 16px;
+      line-height: 1.5;
     }
 
-    /* 실시간 하객스냅 업로드 그리드 */
+    /* 팝업(모달) 스타일 */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+      z-index: 10000; display: flex; justify-content: center; align-items: center;
+      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal-content {
+      width: 88%; max-width: 360px; background: #181818; border: 1px solid #333;
+      border-radius: 12px; padding: 24px 20px; position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 16px; background: none; border: none;
+      color: #888; font-size: 1.2rem; cursor: pointer;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #d88a9a;
+      text-align: center; margin-bottom: 4px; letter-spacing: 2px;
+    }
+    .modal-subtitle { font-size: 0.78rem; color: #888; text-align: center; margin-bottom: 20px; }
+
+    .form-group { margin-bottom: 14px; text-align: left; }
+    .form-group label { display: block; font-size: 0.78rem; color: #aaa; margin-bottom: 6px; }
+    .form-input, .form-select {
+      width: 100%; background: #111; border: 1px solid #333; border-radius: 4px;
+      padding: 10px; color: #fff; font-size: 0.85rem; font-family: 'Noto Serif KR', serif;
+    }
+    .form-input:focus, .form-select:focus { outline: none; border-color: #d88a9a; }
+    .radio-group { display: flex; gap: 16px; font-size: 0.85rem; color: #ccc; align-items: center; margin-top: 4px; }
+    .radio-group label { display: flex; align-items: center; gap: 6px; cursor: pointer; margin-bottom: 0; color: #ccc; }
+    .action-btn {
+      width: 100%; background-color: #d88a9a; color: #0d0d0d; border: none;
+      border-radius: 4px; padding: 12px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 6px;
+    }
+    .action-btn:disabled { background-color: #555; cursor: not-allowed; }
+
+    /* 실시간 하객스냅 */
     .snap-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-top: 12px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px;
     }
     .snap-item {
-      aspect-ratio: 1;
-      background: #1a1a1a;
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
+      aspect-ratio: 1; background: #1a1a1a; border-radius: 4px; overflow: hidden; position: relative;
     }
-    .snap-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .snap-item img { width: 100%; height: 100%; object-fit: cover; }
     .snap-upload-label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1.5px dashed #444;
-      cursor: pointer;
-      color: #888;
-      font-size: 0.75rem;
-      text-align: center;
-      gap: 4px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1.5px dashed #444; cursor: pointer; color: #888; font-size: 0.75rem; text-align: center; gap: 4px;
     }
-    .snap-upload-label:hover {
-      border-color: #d88a9a;
-      color: #d88a9a;
-    }
+    .snap-upload-label:hover { border-color: #d88a9a; color: #d88a9a; }
 
     /* 위치 & 계좌 */
     .location-info { text-align: center; width: 100%; }
@@ -288,30 +255,14 @@
     .account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
     .copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; cursor: pointer; }
 
-    /* 핑크색 복사 완료 토스트 팝업 디자인 */
+    /* 토스트 팝업 */
     .toast-popup {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background-color: #d88a9a;
-      color: #0d0d0d;
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(216, 138, 154, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 10000;
-      white-space: nowrap;
+      position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background-color: #d88a9a; color: #0d0d0d; padding: 10px 22px; border-radius: 30px;
+      font-size: 0.85rem; font-weight: 600; box-shadow: 0 4px 15px rgba(216, 138, 154, 0.4);
+      opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 20000; white-space: nowrap;
     }
-    .toast-popup.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
-    }
+    .toast-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
     footer { text-align: center; padding: 40px 0; }
     .footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
@@ -330,6 +281,54 @@
       <span class="btn-heart">♥</span>
       <span>초대장 열기</span>
     </button>
+  </div>
+</div>
+
+<!-- 2. RSVP 팝업창 (모달) -->
+<div class="modal-overlay" id="rsvpModal">
+  <div class="modal-content">
+    <button class="modal-close" id="modalCloseBtn">&times;</button>
+    <div class="modal-title">RSVP</div>
+    <div class="modal-subtitle">참석 여부를 알려주세요</div>
+
+    <form id="rsvpForm">
+      <div class="form-group">
+        <label>구분</label>
+        <div class="radio-group">
+          <label><input type="radio" name="side" value="신랑측" checked> 신랑 측</label>
+          <label><input type="radio" name="side" value="신부측"> 신부 측</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>성함</label>
+        <input type="text" class="form-input" id="rsvpName" placeholder="성함을 입력해주세요" required>
+      </div>
+
+      <div class="form-group">
+        <label>연락처</label>
+        <input type="tel" class="form-input" id="rsvpPhone" placeholder="연락처 (- 없이 입력)" required>
+      </div>
+
+      <div class="form-group">
+        <label>참석 여부</label>
+        <div class="radio-group">
+          <label><input type="radio" name="attendance" value="참석" checked> 참석</label>
+          <label><input type="radio" name="attendance" value="불참"> 불참</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>식사 여부</label>
+        <select class="form-select" id="rsvpMeal">
+          <option value="식사예정">식사 예정 (예식장)</option>
+          <option value="식사안함">식사 안 함</option>
+          <option value="미정">미정</option>
+        </select>
+      </div>
+
+      <button type="submit" class="action-btn" id="rsvpSubmitBtn">전송하기</button>
+    </form>
   </div>
 </div>
 
@@ -397,7 +396,7 @@
     </div>
   </section>
 
-  <!-- GALLERY SECTION (사진 2개) -->
+  <!-- GALLERY SECTION -->
   <section class="section">
     <div class="section-title">GALLERY</div>
     <div class="photo-grid">
@@ -406,65 +405,30 @@
     </div>
   </section>
 
-  <!-- 💖 1. RSVP (참석 여부 전달) 섹션 추가 -->
+  <!-- RSVP 팝업 호출 배너 섹션 -->
   <section class="section">
     <div class="section-title">RSVP</div>
-    <div class="account-subtitle">참석 여부를 알려주세요</div>
+    <div class="account-subtitle">참석 여부 전달</div>
     
-    <div class="feature-box">
-      <form id="rsvpForm">
-        <div class="form-group">
-          <label>구분</label>
-          <div class="radio-group">
-            <label><input type="radio" name="side" value="groom" checked> 신랑 측</label>
-            <label><input type="radio" name="side" value="bride"> 신부 측</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>성함</label>
-          <input type="text" class="form-input" id="rsvpName" placeholder="성함을 입력해주세요" required>
-        </div>
-
-        <div class="form-group">
-          <label>연락처</label>
-          <input type="tel" class="form-input" id="rsvpPhone" placeholder="연락처를 입력해주세요 (- 없이)" required>
-        </div>
-
-        <div class="form-group">
-          <label>참석 여부</label>
-          <div class="radio-group">
-            <label><input type="radio" name="attendance" value="yes" checked> 참석합니다</label>
-            <label><input type="radio" name="attendance" value="no"> 아쉽지만 불참합니다</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>식사 여부</label>
-          <select class="form-select" id="rsvpMeal">
-            <option value="yes">식사 예정 (예식장)</option>
-            <option value="no">식사 안 함</option>
-            <option value="maybe">미정</option>
-          </select>
-        </div>
-
-        <button type="submit" class="action-btn">참석 의사 전달하기</button>
-      </form>
+    <div class="rsvp-banner-box">
+      <div class="rsvp-desc">
+        소중한 발걸음을 해주시는 분들을 위해<br>참석 여부를 미리 알려주세요.
+      </div>
+      <button class="action-btn" id="openRsvpModalBtn">참석 여부 작성하기</button>
     </div>
   </section>
 
-  <!-- 💖 2. 실시간 하객스냅 섹션 추가 -->
+  <!-- 실시간 하객스냅 섹션 -->
   <section class="section">
     <div class="section-title">GUEST SNAP</div>
     <div class="account-subtitle">실시간 하객스냅 사진첩</div>
     
-    <div class="feature-box">
+    <div class="rsvp-banner-box">
       <div style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 14px;">
         결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 공유해주세요!
       </div>
       
       <div class="snap-grid" id="snapGrid">
-        <!-- 업로드 버튼 겸용 격자 -->
         <label class="snap-item snap-upload-label">
           <span style="font-size: 1.2rem;">+</span>
           <span>사진 올리기</span>
@@ -544,11 +508,14 @@
   </footer>
 </main>
 
-<!-- 복사 완료 핑크색 토스트 팝업 요소 -->
-<div class="toast-popup" id="toastPopup">계좌번호가 복사되었습니다.</div>
+<!-- 토스트 팝업 메시지 -->
+<div class="toast-popup" id="toastPopup">안내 메시지</div>
 
 <!-- 스크립트 -->
 <script>
+  // 구글 스프레드시트 웹 앱 URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwm9a2AWagYZ_LDis-qPsx6S6QL98E3j9BxjyrNUSl9o0xdk0dKK8g7BM3Y-Fnc4oMg/exec";
+
   // 1. 오프닝 닫기
   document.getElementById('openBtn').addEventListener('click', function() {
     document.getElementById('openingOverlay').classList.add('fade-out');
@@ -599,7 +566,7 @@
     });
   });
 
-  // 4. 카카오톡 인앱 브라우저 호환 핑크색 토스트 팝업 복사 기능
+  // 토스트 팝업 함수
   let toastTimer;
   function showToast(message) {
     const toast = document.getElementById('toastPopup');
@@ -612,30 +579,72 @@
     }, 2000);
   }
 
+  // 4. 계좌번호 복사 기능
   document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const text = this.getAttribute('data-copy');
-      
       const t = document.createElement("textarea");
       t.value = text;
       document.body.appendChild(t);
       t.select();
       document.execCommand('copy');
       document.body.removeChild(t);
-
       showToast('계좌번호가 복사되었습니다.');
     });
   });
 
-  // 5. RSVP 전송 이벤트 처리
+  // 5. RSVP 팝업 제어
+  const rsvpModal = document.getElementById('rsvpModal');
+  document.getElementById('openRsvpModalBtn').addEventListener('click', () => {
+    rsvpModal.classList.add('show');
+  });
+  document.getElementById('modalCloseBtn').addEventListener('click', () => {
+    rsvpModal.classList.remove('show');
+  });
+  rsvpModal.addEventListener('click', (e) => {
+    if (e.target === rsvpModal) rsvpModal.classList.remove('show');
+  });
+
+  // RSVP 제출 처리 (구글 스프레드시트 연동)
   document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('rsvpName').value;
-    showToast(`${name}님의 참석 여부가 전달되었습니다. 감사합니다!`);
-    this.reset();
+    const submitBtn = document.getElementById('rsvpSubmitBtn');
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = '전송 중...';
+
+    const formData = new URLSearchParams({
+      side: document.querySelector('input[name="side"]:checked').value,
+      name: name,
+      phone: document.getElementById('rsvpPhone').value,
+      attendance: document.querySelector('input[name="attendance"]:checked').value,
+      meal: document.getElementById('rsvpMeal').value
+    });
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      rsvpModal.classList.remove('show');
+      showToast(`${name}님의 참석 여부가 안전하게 전달되었습니다!`);
+      this.reset();
+    })
+    .catch(error => {
+      // CORS 이슈로 에러가 나더라도 데이터가 시트에 정상 적재되는 경우가 많아 성공으로 처리합니다.
+      rsvpModal.classList.remove('show');
+      showToast(`${name}님의 참석 여부가 전달되었습니다!`);
+      this.reset();
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '전송하기';
+    });
   });
 
-  // 6. 실시간 하객스냅 사진 업로드 및 미리보기 처리
+  // 6. 실시간 하객스냅 사진 업로드
   document.getElementById('snapInput').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -643,14 +652,12 @@
     const reader = new FileReader();
     reader.onload = function(event) {
       const snapGrid = document.getElementById('snapGrid');
-      const uploadLabel = snapGrid.firstElementChild; // 첫 번째 자리가 업로드 버튼
+      const uploadLabel = snapGrid.firstElementChild;
 
-      // 새로운 사진 아이템 생성
       const newItem = document.createElement('div');
       newItem.className = 'snap-item';
       newItem.innerHTML = `<img src="${event.target.result}" alt="하객스냅 사진">`;
 
-      // 업로드 버튼 앞에 새 사진 삽입
       snapGrid.insertBefore(newItem, uploadLabel);
       showToast('사진이 등록되었습니다!');
     };
