@@ -19,7 +19,179 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css">
+  <!-- 통합 스타일 -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0d0d0d;
+      color: #f1f1f1;
+      font-family: 'Noto Serif KR', serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      justify-content: center;
+    }
+    .page {
+      width: 100%;
+      max-width: 430px;
+      background-color: #0d0d0d;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 오프닝 */
+    .opening-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: #0d0d0d; z-index: 9999;
+      display: flex; justify-content: center; align-items: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .opening-overlay.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+    .opening-content { text-align: center; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    .opening-couples { font-size: 1.6rem; font-weight: 500; color: #d88a9a; letter-spacing: 2px; margin-bottom: 30px; }
+    .opening-heart { color: #d88a9a; margin: 0 8px; font-size: 1.4rem; display: inline-block; }
+    .opening-btn {
+      padding: 12px 28px; background-color: transparent; border: 1.5px solid #d88a9a;
+      color: #d88a9a; border-radius: 30px; font-size: 0.95rem; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* 상단 헤더 */
+    .top-header {
+      position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px; z-index: 100;
+      background-color: rgba(13, 13, 13, 0.85); backdrop-filter: blur(8px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .header-title { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; letter-spacing: 2px; color: #d88a9a; }
+    .menu-icon { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
+
+    /* 섹션 공통 및 구분선 스타일 */
+    .section {
+      width: 100%;
+      padding: 70px 24px;
+      box-sizing: border-box;
+      position: relative;
+    }
+    
+    /* 섹션 사이 은은한 얇은 구분선 */
+    .section:not(:last-of-type)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* 커버 */
+    .cover {
+      width: 100%; padding: 70px 24px 40px 24px;
+      background-color: #d88a9a; color: #111111; text-align: center;
+      border-radius: 0 0 8px 8px; box-sizing: border-box;
+      position: relative;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 24px; right: 24px;
+      height: 1px; background: rgba(0, 0, 0, 0.1);
+    }
+
+    .cover-hero-header { margin-bottom: 12px; }
+    .cover-kicker { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; }
+    .cover-subkicker { font-family: 'Cormorant Garamond', serif; font-size: 0.65rem; letter-spacing: 1.5px; margin-top: 2px; }
+    .cover-photo-wrap { position: relative; width: 100%; border-radius: 4px; overflow: hidden; }
+    .cover-photo { width: 100%; display: block; object-fit: cover; }
+    .cover-poster-title {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 90%; text-align: center; font-family: 'Caveat', cursive;
+      font-size: 2.8rem; font-weight: 700; line-height: 1.05; color: #ffffff;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+    .cover-info { margin-top: 14px; font-size: 0.85rem; font-weight: 600; }
+
+    /* 초대글 */
+    .intro-text-block { text-align: center; width: 100%; }
+    .join-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; line-height: 1.25; color: #ffffff; margin-bottom: 28px; }
+    .family-info { font-size: 0.88rem; color: #ccc; margin-bottom: 40px; line-height: 1.9; }
+    .family-info .role { font-size: 0.75rem; color: #777; }
+    .family-info strong { color: #fff; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 4px; color: #d88a9a; text-align: center; margin-bottom: 24px; }
+    .story-intro { font-size: 0.85rem; color: #aaa; line-height: 1.85; }
+
+    /* 캘린더 */
+    .date-lead { text-align: center; margin-bottom: 24px; }
+    .big-date { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #ffffff; }
+    .weekday { font-size: 0.8rem; color: #888; }
+    
+    .calendar-wrap {
+      width: 100%;
+      background: #141414;
+      border-radius: 8px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .calendar-header {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+    .calendar-grid {
+      display: grid !important;
+      grid-template-columns: repeat(7, 1fr) !important;
+      gap: 6px !important;
+      text-align: center;
+      font-size: 0.82rem;
+    }
+    .calendar-grid div {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+    }
+    .calendar-grid div:nth-child(7n+1) { color: #d88a9a; } /* 일요일 */
+    .calendar-grid div.wedding-day {
+      background-color: #d88a9a;
+      color: #0d0d0d;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    /* 갤러리 */
+    .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
+    .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* 위치 & 계좌 */
+    .location-info { text-align: center; width: 100%; }
+    .venue { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
+    .address { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+    .map-buttons { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+    .chip-button { padding: 6px 12px; background: #1a1a1a; border: 1px solid #333; color: #d88a9a; text-decoration: none; font-size: 0.75rem; border-radius: 20px; }
+    .transport { text-align: left; font-size: 0.8rem; color: #aaa; background: #141414; padding: 14px; border-radius: 4px; margin-top: 16px; }
+    .transport-row { margin-bottom: 8px; }
+    .transport-row:last-child { margin-bottom: 0; }
+
+    .account-subtitle { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 16px; }
+    .account-list { width: 100%; }
+    .account-group { margin-bottom: 10px; background: #141414; border-radius: 4px; overflow: hidden; }
+    .account-toggle { width: 100%; padding: 12px 14px; background: none; border: none; color: #fff; display: flex; justify-content: space-between; font-size: 0.85rem; cursor: pointer; }
+    .account-content { padding: 0 14px 12px 14px; display: none; }
+    .account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
+    .copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; cursor: pointer; }
+
+    footer { text-align: center; padding: 40px 0; }
+    .footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
+  </style>
 </head>
 
 <body>
@@ -45,7 +217,7 @@
   </header>
 
   <!-- COVER SECTION -->
-  <section class="cover reveal">
+  <section class="cover">
     <div class="cover-hero-header">
       <div class="cover-kicker">JANUARY 02, 2027 SAT 11:00 AM</div>
       <div class="cover-subkicker">AT APELGAMO SEONLLEUNG</div>
@@ -69,7 +241,7 @@
   </section>
 
   <!-- INVITATION SECTION -->
-  <section class="section reveal">
+  <section class="section">
     <div class="intro-text-block">
       <h2 class="join-title">Join us<br>for our wedding</h2>
 
@@ -89,72 +261,21 @@
     </div>
   </section>
 
-  <!-- CALENDAR SECTION (캘린더 직접 마크업 구현으로 깨짐 방지) -->
-  <section class="section reveal">
+  <!-- CALENDAR SECTION -->
+  <section class="section">
     <div class="date-lead">
       <div class="big-date">2027.01.02</div>
       <div class="weekday">토요일 오전 11시</div>
     </div>
 
     <div class="calendar-wrap">
-      <div class="calendar-header-month">2027년 1월</div>
-      <div class="calendar-table">
-        <div class="cal-day-name sun">일</div>
-        <div class="cal-day-name">월</div>
-        <div class="cal-day-name">화</div>
-        <div class="cal-day-name">수</div>
-        <div class="cal-day-name">목</div>
-        <div class="cal-day-name">금</div>
-        <div class="cal-day-name sat">토</div>
-
-        <!-- 2027년 1월 달력 그리드 (1일: 금요일) -->
-        <div class="cal-day empty"></div>
-        <div class="cal-day empty"></div>
-        <div class="cal-day empty"></div>
-        <div class="cal-day empty"></div>
-        <div class="cal-day empty"></div>
-        <div class="cal-day">1</div>
-        <div class="cal-day sat highlight-day">2</div> <!-- 결혼식 당일 -->
-
-        <div class="cal-day sun">3</div>
-        <div class="cal-day">4</div>
-        <div class="cal-day">5</div>
-        <div class="cal-day">6</div>
-        <div class="cal-day">7</div>
-        <div class="cal-day">8</div>
-        <div class="cal-day sat">9</div>
-
-        <div class="cal-day sun">10</div>
-        <div class="cal-day">11</div>
-        <div class="cal-day">12</div>
-        <div class="cal-day">13</div>
-        <div class="cal-day">14</div>
-        <div class="cal-day">15</div>
-        <div class="cal-day sat">16</div>
-
-        <div class="cal-day sun">17</div>
-        <div class="cal-day">18</div>
-        <div class="cal-day">19</div>
-        <div class="cal-day">20</div>
-        <div class="cal-day">21</div>
-        <div class="cal-day">22</div>
-        <div class="cal-day sat">23</div>
-
-        <div class="cal-day sun">24</div>
-        <div class="cal-day">25</div>
-        <div class="cal-day">26</div>
-        <div class="cal-day">27</div>
-        <div class="cal-day">28</div>
-        <div class="cal-day">29</div>
-        <div class="cal-day sat">30</div>
-
-        <div class="cal-day sun">31</div>
-      </div>
+      <div class="calendar-header">2027년 1월</div>
+      <div class="calendar-grid" id="calendarGrid"></div>
     </div>
   </section>
 
-  <!-- GALLERY SECTION (갤러리 HTML 직접 구성) -->
-  <section class="section reveal">
+  <!-- GALLERY SECTION -->
+  <section class="section">
     <div class="section-title">GALLERY</div>
     <div class="photo-grid">
       <div class="gallery-item"><img src="images/hero/1.jpg" alt="갤러리 1"></div>
@@ -167,7 +288,7 @@
   </section>
 
   <!-- LOCATION SECTION -->
-  <section class="section reveal">
+  <section class="section">
     <div class="section-title">LOCATION</div>
 
     <div class="location-info">
@@ -200,7 +321,7 @@
   </section>
 
   <!-- ACCOUNT SECTION -->
-  <section class="section reveal">
+  <section class="section">
     <div class="section-title">ACCOUNT</div>
     <div class="account-subtitle">마음 전하실 곳</div>
 
@@ -236,27 +357,49 @@
   </footer>
 </main>
 
-<!-- 갤러리 모달 팝업 레이어 -->
-<div class="photo-modal" id="photoModal" aria-hidden="true" style="display: none;">
-  <span class="modal-close">&times;</span>
-  <button class="modal-prev" aria-label="이전 이미지">&lt;</button>
-  <img class="modal-content" id="modalImage" alt="확대된 이미지">
-  <button class="modal-next" aria-label="다음 이미지">&gt;</button>
-  <div class="modal-count" id="modalCount">1 / 6</div>
-</div>
-
-<!-- 계좌 복사 안내 토스트 메시지 -->
-<div class="toast" id="toast"></div>
-
-<!-- 심플하고 안전한 인라인 제어 스크립트 (오프닝, 계좌 아코디언, 복사 기능) -->
+<!-- 스크립트 -->
 <script>
-  // 1. 오프닝 닫기 버튼
+  // 1. 오프닝 닫기
   document.getElementById('openBtn').addEventListener('click', function() {
-    const overlay = document.getElementById('openingOverlay');
-    overlay.classList.add('fade-out');
+    document.getElementById('openingOverlay').classList.add('fade-out');
   });
 
-  // 2. 계좌 아코디언 토글
+  // 2. 캘린더 동적 생성 (2027년 1월)
+  function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    if (!grid) return;
+
+    const daysName = ['일', '월', '화', '수', '목', '금', '토'];
+    daysName.forEach(d => {
+      const el = document.createElement('div');
+      el.textContent = d;
+      el.style.fontWeight = '600';
+      el.style.fontSize = '0.75rem';
+      el.style.color = (d === '일') ? '#d88a9a' : '#777';
+      grid.appendChild(el);
+    });
+
+    const firstDayIndex = 5; 
+    const totalDays = 31;
+
+    for (let i = 0; i < firstDayIndex; i++) {
+      const emptyEl = document.createElement('div');
+      grid.appendChild(emptyEl);
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+      const dayEl = document.createElement('div');
+      dayEl.textContent = day;
+      if (day === 2) {
+        dayEl.classList.add('wedding-day');
+      }
+      grid.appendChild(dayEl);
+    }
+  }
+
+  renderCalendar();
+
+  // 3. 계좌 아코디언
   document.querySelectorAll('.account-toggle').forEach(btn => {
     btn.addEventListener('click', function() {
       const content = this.nextElementSibling;
@@ -266,7 +409,7 @@
     });
   });
 
-  // 3. 계좌번호 복사 기능
+  // 4. 계좌 복사
   document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       const text = this.getAttribute('data-copy');
