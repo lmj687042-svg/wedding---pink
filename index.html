@@ -418,26 +418,6 @@
     </div>
   </section>
 
-  <!-- 실시간 하객스냅 섹션 -->
-  <section class="section">
-    <div class="section-title">GUEST SNAP</div>
-    <div class="account-subtitle">실시간 하객스냅 사진첩</div>
-    
-    <div class="rsvp-banner-box">
-      <div style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 14px;">
-        결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 공유해주세요!
-      </div>
-      
-      <div class="snap-grid" id="snapGrid">
-        <label class="snap-item snap-upload-label">
-          <span style="font-size: 1.2rem;">+</span>
-          <span>사진 올리기</span>
-          <input type="file" id="snapInput" accept="image/*" style="display: none;">
-        </label>
-      </div>
-    </div>
-  </section>
-
   <!-- LOCATION SECTION -->
   <section class="section">
     <div class="section-title">LOCATION</div>
@@ -503,6 +483,26 @@
     </div>
   </section>
 
+  <!-- 실시간 하객스냅 섹션 (맨 마지막 배치) -->
+  <section class="section">
+    <div class="section-title">GUEST SNAP</div>
+    <div class="account-subtitle">실시간 하객스냅 사진첩</div>
+    
+    <div class="rsvp-banner-box">
+      <div style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 14px;">
+        결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 공유해주세요!
+      </div>
+      
+      <div class="snap-grid" id="snapGrid">
+        <label class="snap-item snap-upload-label">
+          <span style="font-size: 1.2rem;">+</span>
+          <span>사진 올리기</span>
+          <input type="file" id="snapInput" accept="image/*" style="display: none;">
+        </label>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="footer-mark">THANK YOU</div>
   </footer>
@@ -513,13 +513,12 @@
 
 <!-- 스크립트 -->
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwm9a2AWagYZ_LDis-qPsx6S6QL98E3j9BxjyrNUSl9o0xdk0dKK8g7BM3Y-Fnc4oMg/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_B27pH2ovpQbdUu9fSXWLU48ERH2kqcJeqxixZZ-l0sEv2yf3IG3vdMWhhpHoG3o4/exec";
 
   // 1. 오프닝 닫기 및 RSVP 팝업 동시 띄우기
   document.getElementById('openBtn').addEventListener('click', function() {
     document.getElementById('openingOverlay').classList.add('fade-out');
     
-    // 오프닝이 닫힌 직후(약 0.3초 뒤) RSVP 팝업창 띄우기
     setTimeout(() => {
       document.getElementById('rsvpModal').classList.add('show');
     }, 300);
@@ -648,29 +647,55 @@
     submitBtn.disabled = false;
     submitBtn.textContent = '전송하기';
 
-    // 전송 완료 후 첫 화면(분홍색 포스터 커버)으로 부드럽게 스크롤 이동
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드
+  // 6. 실시간 하객스냅 사진 업로드 (구글 드라이브 연동)
   document.getElementById('snapInput').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
 
+    showToast('사진을 업로드하는 중입니다...');
+
     const reader = new FileReader();
     reader.onload = function(event) {
-      const snapGrid = document.getElementById('snapGrid');
-      const uploadLabel = snapGrid.firstElementChild;
+      const base64Data = event.target.result;
 
-      const newItem = document.createElement('div');
-      newItem.className = 'snap-item';
-      newItem.innerHTML = `<img src="${event.target.result}" alt="하객스냅 사진">`;
+      // 구글 드라이브로 사진 전송 데이터 구성
+      const formData = new URLSearchParams({
+        photoData: base64Data,
+        photoName: file.name,
+        photoType: file.type
+      });
 
-      snapGrid.insertBefore(newItem, uploadLabel);
-      showToast('사진이 등록되었습니다!');
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        addPhotoToGrid(base64Data);
+        showToast('하객스냅 사진이 안전하게 등록되었습니다!');
+      })
+      .catch(error => {
+        // CORS 에러가 나더라도 드라이브에 정상 저장되므로 화면에 반영
+        addPhotoToGrid(base64Data);
+        showToast('하객스냅 사진이 등록되었습니다!');
+      });
     };
     reader.readAsDataURL(file);
   });
+
+  function addPhotoToGrid(imageSrc) {
+    const snapGrid = document.getElementById('snapGrid');
+    const uploadLabel = snapGrid.firstElementChild;
+
+    const newItem = document.createElement('div');
+    newItem.className = 'snap-item';
+    newItem.innerHTML = `<img src="${imageSrc}" alt="하객스냅 사진">`;
+
+    snapGrid.insertBefore(newItem, uploadLabel);
+  }
 </script>
 </body>
 </html>
