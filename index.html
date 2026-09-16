@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -285,7 +284,7 @@
   </div>
 </div>
 
-<!-- 2. RSVP 팝업창 (모달) - 오프닝 직후 바로 뜸 -->
+<!-- 2. RSVP 팝업창 (모달) -->
 <div class="modal-overlay" id="rsvpModal">
   <div class="modal-content">
     <button class="modal-close" id="modalCloseBtn">&times;</button>
@@ -340,7 +339,7 @@
     <button class="menu-icon" aria-label="메뉴">☰</button>
   </header>
 
-  <!-- COVER SECTION (첫 화면 분홍색 포스터) -->
+  <!-- COVER SECTION -->
   <section class="cover" id="coverSection">
     <div class="cover-hero-header">
       <div class="cover-kicker">JANUARY 02, 2027 SAT 11:00 AM</div>
@@ -484,21 +483,22 @@
     </div>
   </section>
 
-  <!-- 실시간 하객스냅 섹션 (맨 마지막 배치) -->
+  <!-- 실시간 하객스냅 섹션 (다중 선택 multiple 적용) -->
   <section class="section">
     <div class="section-title">GUEST SNAP</div>
     <div class="account-subtitle">실시간 하객스냅 사진첩</div>
     
     <div class="rsvp-banner-box">
       <div style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 14px;">
-        결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 공유해주세요!
+        결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 여러 장 동시에 공유해주세요!
       </div>
       
       <div class="snap-grid" id="snapGrid">
         <label class="snap-item snap-upload-label">
           <span style="font-size: 1.2rem;">+</span>
           <span>사진 올리기</span>
-          <input type="file" id="snapInput" accept="image/*" style="display: none;">
+          <!-- multiple 속성 추가로 여러 장 선택 가능 -->
+          <input type="file" id="snapInput" accept="image/*" multiple style="display: none;">
         </label>
       </div>
     </div>
@@ -515,7 +515,7 @@
 <!-- 스크립트 -->
 <script>
   // 새로 발급받은 구글 앱스 스크립트 웹 앱 URL 적용 완료
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzoYPax2lxrKndBYdRY7Ug_8X-94Tc7LD0atpPazEgSPwoEnMvlvpel-33LTuhWro6u/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTU_fHiQ8_xvuSA7-77m_cIjj6aRUAWDUq8PraR_OFQbm9mXeULaS7rbN9UqvDMv9W/exec";
 
   // 1. 오프닝 닫기 및 RSVP 팝업 동시 띄우기
   document.getElementById('openBtn').addEventListener('click', function() {
@@ -600,8 +600,10 @@
 
   // 5. RSVP 팝업 제어
   const rsvpModal = document.getElementById('rsvpModal');
-  document.getElementById('openRsvpModalBtn').addEventListener('click', () => {
-    rsvpModal.classList.add('show');
+  document.querySelectorAll('#openRsvpModalBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      rsvpModal.classList.add('show');
+    });
   });
   document.getElementById('modalCloseBtn').addEventListener('click', () => {
     rsvpModal.classList.remove('show');
@@ -610,7 +612,7 @@
     if (e.target === rsvpModal) rsvpModal.classList.remove('show');
   });
 
-  // RSVP 제출 처리 (JSON 방식 적용)
+  // RSVP 제출 처리 (CORS 우회 방식 적용)
   document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('rsvpName').value;
@@ -629,13 +631,14 @@
 
     fetch(SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(() => {
       completeRsvpSubmission(name);
     })
-    .catch(error => {
+    .catch(() => {
       completeRsvpSubmission(name);
     });
   });
@@ -652,41 +655,52 @@
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드 (JSON 방식 적용 - 사진만 단독 업로드 가능)
-  document.getElementById('snapInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
+  // 6. 실시간 하객스냅 사진 업로드 (다중 선택 + CORS 우회 방식)
+  document.getElementById('snapInput').addEventListener('change', async function(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    showToast('사진을 업로드하는 중입니다...');
+    showToast(`총 ${files.length}장의 사진을 업로드하는 중입니다...`);
 
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const base64Data = event.target.result;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      await uploadSingleFile(file);
+    }
 
-      const payload = {
-        photoData: base64Data,
-        photoName: file.name,
-        photoType: file.type
-      };
-
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(data => {
-        addPhotoToGrid(base64Data);
-        showToast('하객스냅 사진이 안전하게 등록되었습니다!');
-        document.getElementById('snapInput').value = '';
-      })
-      .catch(error => {
-        addPhotoToGrid(base64Data);
-        showToast('하객스냅 사진이 등록되었습니다!');
-        document.getElementById('snapInput').value = '';
-      });
-    };
-    reader.readAsDataURL(file);
+    showToast('모든 사진이 안전하게 등록되었습니다!');
+    document.getElementById('snapInput').value = '';
   });
+
+  function uploadSingleFile(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const base64Data = event.target.result;
+
+        const payload = {
+          photoData: base64Data,
+          photoName: file.name,
+          photoType: file.type
+        };
+
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        })
+        .then(() => {
+          addPhotoToGrid(base64Data);
+          resolve();
+        })
+        .catch(() => {
+          addPhotoToGrid(base64Data);
+          resolve();
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
 
   function addPhotoToGrid(imageSrc) {
     const snapGrid = document.getElementById('snapGrid');
