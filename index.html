@@ -14,7 +14,7 @@
 
   <title>이용재 & 이민진 · OUR WEDDING</title>
 
-  <!-- Google Fonts: Caveat(손글씨), Cormorant Garamond, Noto Serif KR -->
+  <!-- Google Fonts: Caveat(사진 위 손글씨), Cormorant Garamond, Noto Serif KR -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -25,18 +25,20 @@
 <body>
 
 <main class="page">
+  <!-- 상단 헤더 -->
   <header class="top-header">
     <div class="header-title">The Wedding of</div>
     <button class="menu-icon" aria-label="메뉴">☰</button>
   </header>
 
-  <!-- COVER SECTION (핑크 포스터 카드) -->
-  <section class="cover">
+  <!-- COVER SECTION (첫 화면 핑크 포스터 카드) -->
+  <section class="cover reveal">
     <div class="cover-hero-header">
-      <div class="cover-kicker">JANUARY 02, 2027 SAT 12:00 PM</div>
-      <div class="cover-subkicker">AT APELGAMO SEONLLEUNG</div>
+      <div class="cover-kicker" id="coverKicker">JANUARY 02, 2027 SAT 12:00 PM</div>
+      <div class="cover-subkicker" id="coverSubkicker">AT APELGAMO SEONLLEUNG</div>
     </div>
 
+    <!-- 메인 사진 영역 -->
     <div class="cover-photo-wrap">
       <img class="cover-photo" src="images/hero/1.jpg" alt="메인 사진">
       
@@ -56,8 +58,9 @@
     </div>
   </section>
 
-  <section class="section">
-    <div class="intro-text-block reveal">
+  <!-- INVITATION SECTION -->
+  <section class="section reveal">
+    <div class="intro-text-block">
       <h2 class="join-title">Join us<br>for our wedding</h2>
 
       <div class="family-info">
@@ -75,35 +78,38 @@
     </div>
   </section>
 
-  <section class="section">
-    <div class="date-lead reveal">
+  <!-- CALENDAR SECTION -->
+  <section class="section reveal">
+    <div class="date-lead">
       <div class="big-date" id="dateLead">2027.01.02</div>
       <div class="weekday" id="weekday">토요일 오후 12시</div>
     </div>
 
-    <div class="calendar reveal">
+    <div class="calendar">
       <div class="calendar-grid" id="calendarGrid"></div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- GALLERY SECTION -->
+  <section class="section reveal">
     <div class="section-title">GALLERY</div>
     <div class="photo-grid" id="gallery"></div>
   </section>
 
-  <section class="section">
+  <!-- LOCATION SECTION -->
+  <section class="section reveal">
     <div class="section-title">LOCATION</div>
 
-    <div class="location-info reveal">
+    <div class="location-info">
       <div class="venue" id="venueName">아펠가모 선릉</div>
       <div class="address" id="venueAddress">
         서울특별시 강남구 테헤란로 322 한신인터밸리24 빌딩 4층<br>02-2186-6888
       </div>
 
       <div class="map-buttons">
-        <a class="chip-button" id="naverMap" href="#" target="_blank">네이버 지도 ↗</a>
-        <a class="chip-button" id="kakaoMap" href="#" target="_blank">카카오맵 ↗</a>
-        <a class="chip-button" id="tmap" href="#" target="_blank">티맵 ↗</a>
+        <a class="chip-button" id="naverMap" href="https://map.naver.com" target="_blank">네이버 지도 ↗</a>
+        <a class="chip-button" id="kakaoMap" href="https://map.kakao.com" target="_blank">카카오맵 ↗</a>
+        <a class="chip-button" id="tmap" href="https://tmap.co.kr" target="_blank">티맵 ↗</a>
       </div>
 
       <div class="transport">
@@ -123,7 +129,8 @@
     </div>
   </section>
 
-  <section class="section">
+  <!-- ACCOUNT SECTION -->
+  <section class="section reveal">
     <div class="section-title">ACCOUNT</div>
     <div class="account-subtitle">마음 전하실 곳</div>
 
@@ -159,14 +166,16 @@
   </footer>
 </main>
 
-<div class="modal" id="photoModal" aria-hidden="true">
-  <button class="modal-close">×</button>
-  <button class="modal-prev">‹</button>
-  <img id="modalImage" src="" alt="">
-  <button class="modal-next">›</button>
-  <div class="modal-count" id="modalCount"></div>
+<!-- 갤러리 이미지 클릭 시 뜨는 모달 팝업 레이어 -->
+<div class="photo-modal" id="photoModal" aria-hidden="true" style="display: none;">
+  <span class="modal-close">&times;</span>
+  <button class="modal-prev" aria-label="이전 이미지">&lt;</button>
+  <img class="modal-content" id="modalImage" alt="확대된 이미지">
+  <button class="modal-next" aria-label="다음 이미지">&gt;</button>
+  <div class="modal-count" id="modalCount">1 / 6</div>
 </div>
 
+<!-- 계좌 복사 안내 토스트 메시지 -->
 <div class="toast" id="toast"></div>
 
 <script src="script.js"></script>
