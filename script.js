@@ -1,213 +1,322 @@
-(() => {
-  "use strict";
+/* ==========================================
+   웨딩 데이터 설정 (여기서 모든 정보 수정 가능)
+   ========================================== */
+const weddingData = {
+  // 신랑/신부 정보
+  groom: {
+    name: "용재",
+    fullName: "이용재",
+    parents: "이종수 · 김영희"
+  },
+  bride: {
+    name: "민진",
+    fullName: "이민진",
+    parents: "이철수 · 박순자"
+  },
 
-  const $ = (s, c = document) => c.querySelector(s);
-  const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+  // 예식 일정 (2027년 1월 2일 토요일 12:00)
+  date: {
+    year: 2027,
+    month: 1,
+    day: 2,
+    weekday: "토요일",
+    time: "오후 12:00",
+    headerDateText: "JANUARY 02, 2027 SAT 12:00 PM",
+    coverDateText: "2027.01.02 토요일 오후 12:00"
+  },
 
-  let CONFIG = null;
-  let dateObj = null;
+  // 예식장 정보
+  venue: {
+    name: "아펠가모 선릉",
+    subkicker: "AT APELGAMO SEONLLEUNG",
+    address: "서울특별시 강남구 테헤란로 322 한신인터밸리24 빌딩 4층",
+    phone: "02-2186-6888",
+    subway: "2호선 / 수인분당선 선릉역 4번 출구에서 도보 3분",
+    bus: "선릉역 정류장 하차 (간선: 146, 341, 360 / 지선: 4412)",
+    parking: "건물 내 지하 주차장 이용 (하객 2시간 무료 주차)",
+    naverMapUrl: "https://map.naver.com",
+    kakaoMapUrl: "https://map.kakao.com",
+    tmapUrl: "https://tmap.co.kr"
+  },
 
-  function showToast(message) {
-    const el = $("#toast");
-    el.textContent = message;
-    el.classList.add("show");
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+  // 갤러리 이미지 경로 목록
+  galleryImages: [
+    "images/hero/1.jpg",
+    "images/hero/2.jpg",
+    "images/hero/3.jpg",
+    "images/hero/4.jpg",
+    "images/hero/5.jpg",
+    "images/hero/6.jpg"
+  ]
+};
+
+/* ==========================================
+   페이지 로드 시 초기화 실행
+   ========================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  // 1. 첫 화면 및 텍스트 데이터 바인딩
+  initPageData();
+
+  // 2. 캘린더 생성 (결혼식 날짜 하트 표기)
+  renderCalendar(weddingData.date.year, weddingData.date.month, weddingData.date.day);
+
+  // 3. 갤러리 이미지 및 모달 초기화
+  initGallery();
+
+  // 4. 계좌번호 아코디언 토글 이벤트
+  initAccountToggle();
+
+  // 5. 계좌번호 복사 기능
+  initCopyButtons();
+
+  // 6. 스크롤 애니메이션 (Reveal)
+  initScrollAnimation();
+});
+
+/* ==========================================
+   1. 첫 화면 및 텍스트 데이터 바인딩 함수
+   ========================================== */
+function initPageData() {
+  // 커버 / 첫 화면 영역
+  setText("coverKicker", weddingData.date.headerDateText);
+  setText("coverSubkicker", weddingData.venue.subkicker);
+  setText("coverDate", weddingData.date.coverDateText);
+  setText("coverVenue", weddingData.venue.name);
+
+  // 초대장 / 혼주 및 이름 영역
+  setText("groomFullName", weddingData.groom.fullName);
+  setText("brideFullName", weddingData.bride.fullName);
+
+  // 캘린더 상단 날짜 표기
+  setText("dateLead", `${weddingData.date.year}.${String(weddingData.date.month).padStart(2, '0')}.${String(weddingData.date.day).padStart(2, '0')}`);
+  setText("weekday", `${weddingData.date.weekday} ${weddingData.date.time}`);
+
+  // 오시는 길 영역
+  setText("venueName", weddingData.venue.name);
+  setHTML("venueAddress", `${weddingData.venue.address}<br>${weddingData.venue.phone}`);
+  setText("subway", weddingData.venue.subway);
+  setText("bus", weddingData.venue.bus);
+  setText("parking", weddingData.venue.parking);
+
+  // 지도 버튼 링크
+  setHref("naverMap", weddingData.venue.naverMapUrl);
+  setHref("kakaoMap", weddingData.venue.kakaoMapUrl);
+  setHref("tmap", weddingData.venue.tmapUrl);
+}
+
+/* ==========================================
+   2. 캘린더 생성 함수 (결혼식 날짜 하트 표기)
+   ========================================== */
+function renderCalendar(year, month, weddingDay) {
+  const grid = document.getElementById("calendarGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  // 요일 헤더 (일 ~ 토)
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  daysOfWeek.forEach((day, idx) => {
+    const dayHeader = document.createElement("div");
+    dayHeader.classList.add("cal-header");
+    if (idx === 0) dayHeader.classList.add("sunday");
+    if (idx === 6) dayHeader.classList.add("saturday");
+    dayHeader.textContent = day;
+    grid.appendChild(dayHeader);
+  });
+
+  // 해당 월의 1일 시작 요일 및 총 일수
+  const firstDayIndex = new Date(year, month - 1, 1).getDay();
+  const lastDate = new Date(year, month, 0).getDate();
+
+  // 빈 셀 생성
+  for (let i = 0; i < firstDayIndex; i++) {
+    const emptyCell = document.createElement("div");
+    grid.appendChild(emptyCell);
   }
 
-  async function copyText(text) {
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-      }
-      showToast("복사되었습니다.");
-    } catch {
-      showToast("복사하지 못했습니다.");
+  // 날짜 셀 생성
+  for (let day = 1; day <= lastDate; day++) {
+    const dateCell = document.createElement("div");
+    dateCell.classList.add("cal-day");
+
+    const currentDayOfWeek = (firstDayIndex + day - 1) % 7;
+    if (currentDayOfWeek === 0) dateCell.classList.add("sunday");
+    if (currentDayOfWeek === 6) dateCell.classList.add("saturday");
+
+    // 결혼식 날짜인 경우 하트(♥) 표기
+    if (day === weddingDay) {
+      dateCell.classList.add("wedding-day");
+      dateCell.innerHTML = `<span class="heart-mark">♥</span><span class="day-num">${day}</span>`;
+    } else {
+      dateCell.textContent = day;
     }
+
+    grid.appendChild(dateCell);
   }
+}
 
-  function initConfig() {
-    $("#groomName").textContent = CONFIG.groom;
-    $("#brideName").textContent = CONFIG.bride;
-    $("#groomFullName").textContent = CONFIG.groom;
-    $("#brideFullName").textContent = CONFIG.bride;
+/* ==========================================
+   3. 갤러리 및 모달 슬라이더 기능
+   ========================================== */
+let currentImageIndex = 0;
 
-    $("#venueName").textContent = CONFIG.wedding.venue;
-    $("#venueAddress").innerHTML = `${CONFIG.wedding.address}<br>02-000-0000`;
-    $("#subway").textContent = CONFIG.location.subway;
-    $("#bus").textContent = CONFIG.location.bus;
-    $("#kakaoMap").href = CONFIG.location.kakao;
-    $("#naverMap").href = CONFIG.location.naver;
+function initGallery() {
+  const galleryGrid = document.getElementById("gallery");
+  const photoModal = document.getElementById("photoModal");
+  const modalImg = document.getElementById("modalImage");
+  const modalCount = document.getElementById("modalCount");
 
-    document.title = `${CONFIG.groom} & ${CONFIG.bride} · OUR WEDDING`;
-  }
+  if (!galleryGrid) return;
 
-  const galleryImages = [];
-  function loadGalleryImages() {
-    const grid = $("#gallery");
-    let current = 1;
-    let fails = 0;
-    const max = 30;
+  // 갤러리 이미지 동적 생성
+  galleryGrid.innerHTML = "";
+  weddingData.galleryImages.forEach((src, idx) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = `갤러리 사진 ${idx + 1}`;
+    img.addEventListener("click", () => openModal(idx));
+    galleryGrid.appendChild(img);
+  });
 
-    function tryNext() {
-      if (current > max || fails >= 3) return;
+  // 모달 제어 버튼
+  const closeBtn = document.querySelector(".modal-close");
+  const prevBtn = document.querySelector(".modal-prev");
+  const nextBtn = document.querySelector(".modal-next");
 
-      const src = `images/gallery/${current}.jpg`;
-      const probe = new Image();
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  if (prevBtn) prevBtn.addEventListener("click", showPrevImage);
+  if (nextBtn) nextBtn.addEventListener("click", showNextImage);
 
-      probe.onload = () => {
-        galleryImages.push(src);
-
-        const figure = document.createElement("div");
-        figure.className = "photo-item reveal";
-
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = `웨딩 사진 ${current}`;
-        img.loading = "lazy";
-
-        figure.appendChild(img);
-        figure.addEventListener("click", () => openModal(galleryImages.indexOf(src)));
-
-        grid.appendChild(figure);
-        observer.observe(figure);
-
-        fails = 0;
-        current++;
-        tryNext();
-      };
-
-      probe.onerror = () => {
-        fails++;
-        current++;
-        tryNext();
-      };
-
-      probe.src = src;
-    }
-
-    tryNext();
-  }
-
-  function buildCalendar() {
-    const grid = $("#calendarGrid");
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const weddingDay = dateObj.getDate();
-
-    const dows = ["S", "M", "T", "W", "T", "F", "S"];
-    dows.forEach((d, i) => {
-      const el = document.createElement("div");
-      el.className = `dow ${i === 0 ? "sun" : ""}`;
-      el.textContent = d;
-      grid.appendChild(el);
+  if (photoModal) {
+    photoModal.addEventListener("click", (e) => {
+      if (e.target === photoModal) closeModal();
     });
-
-    for (let i = 0; i < firstDay; i++) {
-      grid.appendChild(document.createElement("div"));
-    }
-
-    for (let day = 1; day <= lastDate; day++) {
-      const el = document.createElement("div");
-      el.textContent = day;
-      const dow = new Date(year, month, day).getDay();
-      if (dow === 0) el.classList.add("sun");
-      if (day === weddingDay) el.classList.add("wedding-day");
-      grid.appendChild(el);
-    }
-  }
-
-  let modalIndex = 0;
-  const modal = $("#photoModal");
-  const modalImage = $("#modalImage");
-  const modalCount = $("#modalCount");
-
-  function updateModal() {
-    if (!galleryImages.length) return;
-    modalImage.src = galleryImages[modalIndex];
-    modalCount.textContent = `${modalIndex + 1} / ${galleryImages.length}`;
   }
 
   function openModal(index) {
-    modalIndex = index;
-    updateModal();
-    modal.classList.add("open");
-    document.body.classList.add("modal-open");
+    currentImageIndex = index;
+    updateModalImage();
+    if (photoModal) {
+      photoModal.style.display = "flex";
+      photoModal.setAttribute("aria-hidden", "false");
+    }
   }
 
   function closeModal() {
-    modal.classList.remove("open");
-    document.body.classList.remove("modal-open");
+    if (photoModal) {
+      photoModal.style.display = "none";
+      photoModal.setAttribute("aria-hidden", "true");
+    }
   }
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-        observer.unobserve(entry.target);
+  function showPrevImage() {
+    currentImageIndex = (currentImageIndex - 1 + weddingData.galleryImages.length) % weddingData.galleryImages.length;
+    updateModalImage();
+  }
+
+  function showNextImage() {
+    currentImageIndex = (currentImageIndex + 1) % weddingData.galleryImages.length;
+    updateModalImage();
+  }
+
+  function updateModalImage() {
+    if (modalImg) modalImg.src = weddingData.galleryImages[currentImageIndex];
+    if (modalCount) modalCount.textContent = `${currentImageIndex + 1} / ${weddingData.galleryImages.length}`;
+  }
+}
+
+/* ==========================================
+   4. 계좌번호 토글 기능
+   ========================================== */
+function initAccountToggle() {
+  const toggles = document.querySelectorAll(".account-toggle");
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("click", function () {
+      const content = this.nextElementSibling;
+      const arrow = this.querySelector("span:last-child");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+        if (arrow) arrow.textContent = "∨";
+      } else {
+        content.style.display = "block";
+        if (arrow) arrow.textContent = "∧";
       }
     });
-  }, { threshold: 0.1 });
+  });
+}
 
-  function initReveal() {
-    $$(".reveal").forEach(el => observer.observe(el));
-  }
+/* ==========================================
+   5. 계좌번호 복사 기능
+   ========================================== */
+function initCopyButtons() {
+  const copyBtns = document.querySelectorAll(".copy-btn");
+  copyBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const accountNum = this.getAttribute("data-copy");
+      if (accountNum) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(accountNum).then(() => {
+            showToast("계좌번호가 복사되었습니다.");
+          });
+        } else {
+          const tempInput = document.createElement("input");
+          tempInput.value = accountNum;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+          showToast("계좌번호가 복사되었습니다.");
+        }
+      }
+    });
+  });
+}
 
-  function initAccounts() {
-    $$(".account-toggle").forEach(btn => {
-      btn.addEventListener("click", () => {
-        btn.closest(".account-group").classList.toggle("open");
+/* ==========================================
+   6. 스크롤 애니메이션 (Reveal)
+   ========================================== */
+function initScrollAnimation() {
+  const reveals = document.querySelectorAll(".reveal");
+  if (!reveals.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+        }
       });
-    });
+    },
+    { threshold: 0.1 }
+  );
 
-    $$(".copy-btn").forEach(btn => {
-      btn.addEventListener("click", () => copyText(btn.dataset.copy));
-    });
-  }
+  reveals.forEach((el) => observer.observe(el));
+}
 
-  $(".modal-close").addEventListener("click", closeModal);
-  $(".modal-next").addEventListener("click", () => {
-    modalIndex = (modalIndex + 1) % galleryImages.length;
-    updateModal();
-  });
-  $(".modal-prev").addEventListener("click", () => {
-    modalIndex = (modalIndex - 1 + galleryImages.length) % galleryImages.length;
-    updateModal();
-  });
+/* ==========================================
+   유틸리티 헬퍼 함수
+   ========================================== */
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el && text) el.textContent = text;
+}
 
-  async function loadConfigAndInit() {
-    try {
-      const res = await fetch("config.json");
-      if (!res.ok) throw new Error("config.json 로드 실패");
-      CONFIG = await res.json();
-    } catch (err) {
-      CONFIG = {
-        groom: "Groom",
-        bride: "Bride",
-        wedding: { date: "2026-12-31", time: "12:00", venue: "예식장 이름", address: "서울특별시 강남구" },
-        location: { subway: "지하철역 도보 5분", bus: "지선/간선 버스 이용", kakao: "#", naver: "#" }
-      };
-    }
+function setHTML(id, html) {
+  const el = document.getElementById(id);
+  if (el && html) el.innerHTML = html;
+}
 
-    dateObj = new Date(`${CONFIG.wedding.date}T12:00:00`);
+function setHref(id, url) {
+  const el = document.getElementById(id);
+  if (el && url) el.href = url;
+}
 
-    initConfig();
-    buildCalendar();
-    loadGalleryImages();
-    initAccounts();
-    initReveal();
-  }
-
-  loadConfigAndInit();
-})();
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.style.display = "block";
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 2000);
+}
