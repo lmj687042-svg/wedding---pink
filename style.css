@@ -7,6 +7,12 @@
   padding: 0;
 }
 
+html {
+  /* 세로 스크롤 시 화면 단위로 멈춤 */
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #0d0d0d;
   color: #f1f1f1;
@@ -21,13 +27,14 @@ body {
   width: 100%;
   max-width: 430px;
   background-color: #0d0d0d;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory; /* 모바일 전용 스냅 */
   position: relative;
-  padding-bottom: 60px;
 }
 
 /* ==========================================
-   💖 OPENING OVERLAY (초대장 열기 랜딩 화면)
+   💖 OPENING OVERLAY
    ========================================== */
 .opening-overlay {
   position: fixed;
@@ -52,6 +59,9 @@ body {
 .opening-content {
   text-align: center;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .opening-couples {
@@ -60,7 +70,7 @@ body {
   font-weight: 500;
   color: #d88a9a;
   letter-spacing: 2px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .opening-heart {
@@ -68,71 +78,39 @@ body {
   margin: 0 8px;
   font-size: 1.4rem;
   display: inline-block;
-  animation: pulse 1.5s infinite;
 }
 
-/* 💗 핑크색 하트 버튼 (개선된 스타일) */
 .opening-btn {
-  background: linear-gradient(135deg, #e59aa8 0%, #d88a9a 100%);
-  color: #ffffff;
-  border: none;
-  padding: 16px 36px;
-  border-radius: 50px;
-  font-size: 1.05rem;
-  font-family: 'Noto Serif KR', serif;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+  padding: 12px 28px;
+  background-color: transparent;
+  border: 1.5px solid #d88a9a;
+  color: #d88a9a;
+  border-radius: 30px;
+  font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(216, 138, 154, 0.45);
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.opening-btn:active {
-  transform: scale(0.95);
-  box-shadow: 0 4px 15px rgba(216, 138, 154, 0.3);
-}
-
-.btn-heart {
-  font-size: 1.2rem;
-  color: #fff;
-  display: inline-block;
-  animation: heartBeat 1.2s infinite ease-in-out;
-}
-
-/* 하트 두근거림 애니메이션 */
-@keyframes heartBeat {
-  0% { transform: scale(1); }
-  14% { transform: scale(1.3); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.3); }
-  70% { transform: scale(1); }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  gap: 8px;
 }
 
 /* ==========================================
    TOP HEADER
    ========================================== */
 .top-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
   z-index: 100;
-  background-color: rgba(13, 13, 13, 0.9);
+  background-color: rgba(13, 13, 13, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .header-title {
@@ -140,7 +118,6 @@ body {
   font-size: 0.9rem;
   letter-spacing: 2px;
   color: #d88a9a;
-  text-transform: uppercase;
 }
 
 .menu-icon {
@@ -148,125 +125,86 @@ body {
   border: none;
   color: #fff;
   font-size: 1.2rem;
-  cursor: pointer;
+}
+
+/* ==========================================
+   SECTIONS GENERAL (한 화면 꽉 채우기 속성)
+   ========================================== */
+.cover,
+.section {
+  width: 100%;
+  min-height: 100vh; /* 화면 높이에 딱 맞춤 */
+  padding: 80px 24px 40px 24px; /* 헤더 여백 확보 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  
+  /* 스크롤 스냅 포인트 설정 */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* ==========================================
    COVER SECTION
    ========================================== */
 .cover {
-  margin: 16px;
-  padding: 24px 16px 20px 16px;
   background-color: #d88a9a;
-  border-radius: 4px;
   color: #111111;
   text-align: center;
+  border-radius: 0 0 8px 8px;
 }
 
-.cover-hero-header {
-  margin-bottom: 16px;
-}
-
-.cover-kicker {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: #111111;
-}
-
-.cover-subkicker {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.65rem;
-  letter-spacing: 1.5px;
-  color: #333333;
-  margin-top: 2px;
-}
+.cover-hero-header { margin-bottom: 12px; }
+.cover-kicker { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; }
+.cover-subkicker { font-family: 'Cormorant Garamond', serif; font-size: 0.65rem; letter-spacing: 1.5px; margin-top: 2px; }
 
 .cover-photo-wrap {
-  position: relative !important;
+  position: relative;
   width: 100%;
-  border-radius: 2px;
+  max-height: 55vh;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-.cover-photo {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: brightness(85%) contrast(110%);
-}
+.cover-photo { width: 100%; height: 100%; object-fit: cover; }
 
 .cover-poster-title {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 90% !important;
-  text-align: center !important;
-  pointer-events: none;
-  
-  font-family: 'Caveat', 'Comic Sans MS', cursive !important;
-  font-size: 3.1rem !important;
-  font-weight: 700 !important;
-  line-height: 1.02 !important;
-  color: #ffffff !important;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5) !important;
-  z-index: 10 !important;
-}
-
-.cover-poster-title span {
-  display: inline-block;
-  letter-spacing: -0.5px;
-}
-
-.cover-poster-title .last-word {
-  font-size: 3.5rem !important;
-  margin-top: 2px;
-}
-
-.cover-info {
-  margin-top: 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #111111;
-  letter-spacing: 0.5px;
-}
-
-/* ==========================================
-   SECTIONS GENERAL
-   ========================================== */
-.section {
-  padding: 48px 24px;
-  border-bottom: 1px solid #1a1a1a;
-}
-
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  letter-spacing: 4px;
-  color: #d88a9a;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
   text-align: center;
-  margin-bottom: 24px;
+  font-family: 'Caveat', cursive;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
+.cover-info { margin-top: 14px; font-size: 0.85rem; font-weight: 600; }
+
 /* ==========================================
-   INVITATION
+   INVITATION SECTION (통합 한 화면 디자인)
    ========================================== */
-.intro-text-block { text-align: center; }
+.intro-text-block {
+  text-align: center;
+  width: 100%;
+}
 
 .join-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   font-weight: 300;
-  line-height: 1.2;
+  line-height: 1.25;
   color: #ffffff;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .family-info {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #ccc;
   margin-bottom: 32px;
   line-height: 1.8;
@@ -275,179 +213,49 @@ body {
 .family-info .role { font-size: 0.75rem; color: #777; }
 .family-info strong { color: #fff; }
 
-.story-intro {
-  font-size: 0.9rem;
-  color: #aaa;
-  line-height: 1.9;
-}
-
-/* ==========================================
-   CALENDAR STYLES
-   ========================================== */
-.date-lead { text-align: center; margin-bottom: 24px; }
-.big-date { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: #ffffff; }
-.weekday { font-size: 0.85rem; color: #888; }
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px 4px;
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 4px;
+  color: #d88a9a;
   text-align: center;
+  margin-bottom: 20px;
+}
+
+.story-intro {
   font-size: 0.85rem;
   color: #aaa;
-  margin-top: 10px;
-}
-
-.cal-header {
-  font-weight: 600;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #222;
-  font-size: 0.8rem;
-}
-
-.cal-day {
-  padding: 10px 0;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.sunday { color: #e57373; }
-.saturday { color: #64b5f6; }
-
-/* 💖 결혼식 날짜 하트 스타일 */
-.wedding-day {
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.wedding-day .heart-mark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  color: #d88a9a;
-  z-index: 1;
-  opacity: 0.9;
-}
-
-.wedding-day .day-num {
-  position: relative;
-  z-index: 2;
-  color: #ffffff;
+  line-height: 1.85;
 }
 
 /* ==========================================
-   GALLERY
+   CALENDAR SECTION
    ========================================== */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.photo-grid img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 2px;
-  cursor: pointer;
-}
+.date-lead { text-align: center; margin-bottom: 20px; }
+.big-date { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #ffffff; }
+.weekday { font-size: 0.8rem; color: #888; }
+.calendar { width: 100%; }
 
 /* ==========================================
-   LOCATION & BUTTONS
+   LOCATION & ACCOUNT & FOOTER & ANIMATION
    ========================================== */
-.location-info { text-align: center; }
-.venue { font-size: 1.2rem; color: #fff; margin-bottom: 6px; }
-.address { font-size: 0.85rem; color: #888; margin-bottom: 20px; }
+.location-info { text-align: center; width: 100%; }
+.venue { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
+.address { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
+.map-buttons { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.chip-button { padding: 6px 12px; background: #1a1a1a; border: 1px solid #333; color: #d88a9a; text-decoration: none; font-size: 0.75rem; border-radius: 20px; }
+.transport { text-align: left; font-size: 0.8rem; color: #aaa; background: #141414; padding: 14px; border-radius: 4px; }
 
-.map-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 28px;
-}
+.account-subtitle { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 16px; }
+.account-list { width: 100%; }
+.account-group { margin-bottom: 10px; background: #141414; border-radius: 4px; }
+.account-toggle { width: 100%; padding: 12px 14px; background: none; border: none; color: #fff; display: flex; justify-content: space-between; font-size: 0.85rem; cursor: pointer; }
+.account-content { padding: 0 14px 12px 14px; display: none; }
+.account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
+.copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; }
 
-.chip-button {
-  padding: 8px 14px;
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  color: #d88a9a;
-  text-decoration: none;
-  font-size: 0.8rem;
-  border-radius: 20px;
-}
+footer { text-align: center; padding: 20px 0; }
+.footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
 
-.transport {
-  text-align: left;
-  font-size: 0.85rem;
-  color: #aaa;
-  background: #141414;
-  padding: 16px;
-  border-radius: 4px;
-}
-
-.transport-row { margin-bottom: 10px; }
-.transport-row strong { color: #d88a9a; display: block; margin-bottom: 2px; }
-
-/* ==========================================
-   ACCOUNT
-   ========================================== */
-.account-subtitle { text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 20px; }
-.account-group { margin-bottom: 12px; background: #141414; border-radius: 4px; }
-.account-toggle {
-  width: 100%; padding: 14px 16px; background: none; border: none;
-  color: #fff; display: flex; justify-content: space-between; font-size: 0.9rem; cursor: pointer;
-}
-.account-content { padding: 0 16px 14px 16px; display: none; }
-.account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; }
-.copy-btn { padding: 4px 10px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.75rem; border-radius: 2px; cursor: pointer; }
-
-/* ==========================================
-   FOOTER & TOAST & MODAL
-   ========================================== */
-footer { text-align: center; padding: 40px 0 20px 0; }
-.footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.9rem; color: #444; }
-
-.toast {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #d88a9a;
-  color: #111;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  display: none;
-  z-index: 2000;
-}
-
-.photo-modal {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.9);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 2000;
-}
-.modal-content { max-width: 90%; max-height: 80vh; border-radius: 4px; }
-.modal-close { position: absolute; top: 20px; right: 25px; font-size: 30px; color: #fff; cursor: pointer; }
-.modal-prev, .modal-next { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; padding: 10px; }
-.modal-prev { left: 10px; }
-.modal-next { right: 10px; }
-.modal-count { position: absolute; bottom: 20px; color: #aaa; font-size: 0.85rem; }
-
-/* ==========================================
-   REVEAL ANIMATION
-   ========================================== */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.8s ease;
-}
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+.reveal.active { opacity: 1; transform: translateY(0); }
