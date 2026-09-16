@@ -20,8 +20,8 @@ const weddingData = {
     day: 2,
     weekday: "토요일",
     time: "오전 11:00",
-    headerDateText: "JANUARY 02, 2027 SAT 12:00 PM",
-    coverDateText: "2027.01.02 토요일 오후 12:00"
+    headerDateText: "JANUARY 02, 2027 SAT 11:00 AM",
+    coverDateText: "2027.01.02 토요일 오전 11:00"
   },
 
   venue: {
@@ -32,18 +32,14 @@ const weddingData = {
     subway: "2호선 / 수인분당선 선릉역 4번 출구에서 도보 3분",
     bus: "선릉역 정류장 하차 (간선: 146, 341, 360 / 지선: 4412)",
     parking: "건물 내 지하 주차장 이용 (하객 2시간 무료 주차)",
-    naverMapUrl: "https://map.naver.com",
+    naverMapUrl: "https://naver.me/GZDPBDgT",
     kakaoMapUrl: "https://map.kakao.com",
     tmapUrl: "https://tmap.co.kr"
   },
 
   galleryImages: [
     "images/hero/1.jpg",
-    "images/hero/2.jpg",
-    "images/hero/3.jpg",
-    "images/hero/4.jpg",
-    "images/hero/5.jpg",
-    "images/hero/6.jpg"
+    "images/hero/2.jpg"
   ]
 };
 
