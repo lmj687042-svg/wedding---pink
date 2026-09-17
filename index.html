@@ -85,6 +85,34 @@
       margin: 0 8px;
       font-size: 1.4rem;
       display: inline-block;
+      animation: heartbeat 1.2s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes heartbeat {
+      0% {
+       transform: scale(1);
+      }
+
+      15% {
+        transform: scale(1.18);
+      }
+
+      30% {
+        transform: scale(1);
+      }
+
+      45% {
+        transform: scale(1.18);
+      }
+
+      60% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     .opening-btn {
