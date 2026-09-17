@@ -654,7 +654,7 @@
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드 (CORS 우회 및 드라이브 직행 보장 전송)
+  // 6. 실시간 하객스냅 사진 업로드 (용량 최적화 및 확실한 드라이브 전송)
   document.getElementById('snapInput').addEventListener('change', async function(e) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -679,8 +679,9 @@
           let width = img.width;
           let height = img.height;
 
-          const MAX_WIDTH = 1000;
-          const MAX_HEIGHT = 1000;
+          // 용량 초과 방지를 위해 800px 이하로 타이트하게 압축
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
           if (width > height) {
             if (width > MAX_WIDTH) {
               height *= MAX_WIDTH / width;
@@ -698,17 +699,16 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          // 화질 0.7로 압축하여 구글 서버 전송 오류 원천 차단
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
           const photoName = "snap_" + Date.now() + "_" + (file.name || "photo.jpg");
 
-          // CORS 에러 원천 차단을 위한 숨겨진 폼(Form) 전송 방식 사용
           const form = document.createElement('form');
           form.method = 'POST';
           form.action = SCRIPT_URL;
           form.target = 'hidden_iframe';
           form.style.display = 'none';
 
-          // 데이터 입력 필드 생성
           const inputData = document.createElement('input');
           inputData.type = 'hidden';
           inputData.name = 'photoData';
@@ -721,13 +721,6 @@
           inputName.value = photoName;
           form.appendChild(inputName);
 
-          const inputDataType = document.createElement('input');
-          inputDataType.type = 'hidden';
-          inputDataType.name = 'photoType';
-          inputDataType.value = 'image/jpeg';
-          form.appendChild(inputDataType);
-
-          // 숨겨진 iframe 생성 (응답 페이지 리다이렉트 방지)
           let iframe = document.getElementById('hidden_iframe');
           if (!iframe) {
             iframe = document.createElement('iframe');
@@ -741,21 +734,17 @@
           form.submit();
           document.body.removeChild(form);
 
-          // 화면에 즉시 추가 후 완료 처리
           addPhotoToGrid(compressedDataUrl);
           
-          // 전송 안정화를 위한 미세 딜레이
           setTimeout(() => {
             resolve();
-          }, 800);
+          }, 1000);
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     });
   }
-
-  function addPhotoTogrid(imageSrc) {} // 예비용
 
   function addPhotoToGrid(imageSrc) {
     const snapGrid = document.getElementById('snapGrid');
