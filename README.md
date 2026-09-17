@@ -1,1 +1,1 @@
-# wedding---pink
+# wedding
