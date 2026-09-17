@@ -654,7 +654,7 @@
     document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // 6. 실시간 하객스냅 사진 업로드 (용량 최적화 및 확실한 드라이브 전송)
+  // 6. 실시간 하객스냅 사진 업로드 (JSON 페이로드 직행 방식)
   document.getElementById('snapInput').addEventListener('change', async function(e) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -679,7 +679,6 @@
           let width = img.width;
           let height = img.height;
 
-          // 용량 초과 방지를 위해 800px 이하로 타이트하게 압축
           const MAX_WIDTH = 800;
           const MAX_HEIGHT = 800;
           if (width > height) {
@@ -699,46 +698,30 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          // 화질 0.7로 압축하여 구글 서버 전송 오류 원천 차단
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
           const photoName = "snap_" + Date.now() + "_" + (file.name || "photo.jpg");
 
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = SCRIPT_URL;
-          form.target = 'hidden_iframe';
-          form.style.display = 'none';
+          const payload = {
+            photoData: compressedDataUrl,
+            photoName: photoName,
+            photoType: 'image/jpeg'
+          };
 
-          const inputData = document.createElement('input');
-          inputData.type = 'hidden';
-          inputData.name = 'photoData';
-          inputData.value = compressedDataUrl;
-          form.appendChild(inputData);
-
-          const inputName = document.createElement('input');
-          inputName.type = 'hidden';
-          inputName.name = 'photoName';
-          inputName.value = photoName;
-          form.appendChild(inputName);
-
-          let iframe = document.getElementById('hidden_iframe');
-          if (!iframe) {
-            iframe = document.createElement('iframe');
-            iframe.name = 'hidden_iframe';
-            iframe.id = 'hidden_iframe';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-          }
-
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-
-          addPhotoToGrid(compressedDataUrl);
-          
-          setTimeout(() => {
+          // 표준 fetch 전송
+          fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(result => {
+            addPhotoToGrid(compressedDataUrl);
             resolve();
-          }, 1000);
+          })
+          .catch(error => {
+            // 통신 에러가 나더라도 UI에는 일단 반영
+            addPhotoToGrid(compressedDataUrl);
+            resolve();
+          });
         };
         img.src = event.target.result;
       };
