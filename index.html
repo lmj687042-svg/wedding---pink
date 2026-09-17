@@ -317,10 +317,23 @@
     }
 
     .calendar-grid div.wedding-day {
-      background-color: #d88a9a;
+      position: relative;
+      background: none;
       color: #0d0d0d;
-      border-radius: 50%;
       font-weight: bold;
+      z-index: 1;
+    }
+
+    .calendar-grid div.wedding-day::before {
+      content: '♥';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #d88a9a;
+      font-size: 2.15rem;
+      line-height: 1;
+      z-index: -1;
     }
 
     /* D-DAY COUNTDOWN */
