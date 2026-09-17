@@ -264,6 +264,56 @@
     }
     .toast-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
+
+    /* 사진 업로드 로딩 팝업 */
+    #uploadLoadingPopup {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    #uploadLoadingPopup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .upload-loading-box {
+      width: calc(100% - 80px);
+      max-width: 300px;
+      padding: 30px 20px;
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+    }
+    .upload-loading-spinner {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 18px;
+      border: 3px solid #eee;
+      border-top: 3px solid #333;
+      border-radius: 50%;
+      animation: uploadSpin 0.8s linear infinite;
+    }
+    @keyframes uploadSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .upload-loading-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #333;
+    }
+    .upload-loading-text span {
+      font-size: 0.8rem;
+      color: #999;
+    }
+
     footer { text-align: center; padding: 40px 0; }
     .footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
   </style>
@@ -655,163 +705,158 @@
   }
 
   // 6. 실시간 하객스냅 사진 업로드
-document.getElementById('snapInput').addEventListener('change', async function(e) {
-  const files = e.target.files;
+  document.getElementById('snapInput').addEventListener('change', async function(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-  if (!files || files.length === 0) return;
+    showUploadLoading(`사진을 저장하고 있어요 📸<br><span>잠시만 기다려주세요.</span>`);
 
-  showToast(`총 ${files.length}장의 사진을 구글 드라이브로 전송 중입니다...`);
+    let successCount = 0;
 
-  let successCount = 0;
-
-  for (let i = 0; i < files.length; i++) {
     try {
-      await uploadPhotoSafely(files[i]);
-      successCount++;
-    } catch (error) {
-      console.error(`사진 ${i + 1} 업로드 실패:`, error);
-    }
-  }
-
-  if (successCount === files.length) {
-    showToast(`${successCount}장의 사진이 저장되었습니다!`);
-  } else if (successCount > 0) {
-    showToast(`${successCount}장 저장 완료 / ${files.length - successCount}장 실패`);
-  } else {
-    showToast('사진 업로드에 실패했습니다.');
-  }
-
-  document.getElementById('snapInput').value = '';
-});
-
-
-function uploadPhotoSafely(file) {
-  return new Promise((resolve, reject) => {
-
-    const reader = new FileReader();
-
-    reader.onload = function(event) {
-
-      const img = new Image();
-
-      img.onload = function() {
-
-        const canvas = document.createElement('canvas');
-
-        let width = img.width;
-        let height = img.height;
-
-        const MAX_WIDTH = 800;
-        const MAX_HEIGHT = 800;
-
-        // 이미지 크기 줄이기
-        if (width > height) {
-
-          if (width > MAX_WIDTH) {
-            height = height * (MAX_WIDTH / width);
-            width = MAX_WIDTH;
-          }
-
-        } else {
-
-          if (height > MAX_HEIGHT) {
-            width = width * (MAX_HEIGHT / height);
-            height = MAX_HEIGHT;
-          }
-
-        }
-
-        canvas.width = Math.round(width);
-        canvas.height = Math.round(height);
-
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          canvas.width,
-          canvas.height
+      for (let i = 0; i < files.length; i++) {
+        await uploadPhotoSafely(files[i]);
+        successCount++;
+        updateUploadLoading(
+          `사진을 저장하고 있어요 📸<br><span>${successCount} / ${files.length}장 저장 중</span>`
         );
+      }
 
-        // JPEG 압축
-        const compressedDataUrl =
-          canvas.toDataURL('image/jpeg', 0.75);
+      hideUploadLoading();
+      showToast('사진이 저장되었습니다! 📸');
 
-        const photoName =
-          "snap_" +
-          Date.now() +
-          "_" +
-          (file.name || "photo.jpg");
+    } catch (error) {
+      hideUploadLoading();
+      showToast('사진 저장 중 문제가 발생했습니다.');
+      console.error(error);
+    }
 
-        const payload = {
-          photoData: compressedDataUrl,
-          photoName: photoName,
-          photoType: "image/jpeg"
+    document.getElementById('snapInput').value = '';
+  });
+
+  // 사진 업로드 로딩 팝업
+  function showUploadLoading(message) {
+    let loading = document.getElementById('uploadLoadingPopup');
+
+    if (!loading) {
+      loading = document.createElement('div');
+      loading.id = 'uploadLoadingPopup';
+      loading.innerHTML = `
+        <div class="upload-loading-box">
+          <div class="upload-loading-spinner"></div>
+          <div class="upload-loading-text" id="uploadLoadingText"></div>
+        </div>
+      `;
+      document.body.appendChild(loading);
+    }
+
+    document.getElementById('uploadLoadingText').innerHTML = message;
+    loading.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateUploadLoading(message) {
+    const text = document.getElementById('uploadLoadingText');
+    if (text) text.innerHTML = message;
+  }
+
+  function hideUploadLoading() {
+    const loading = document.getElementById('uploadLoadingPopup');
+    if (loading) loading.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  function uploadPhotoSafely(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const img = new Image();
+
+        img.onload = function() {
+          try {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            const MAX_WIDTH = 800;
+            const MAX_HEIGHT = 800;
+
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+            const photoName = "snap_" + Date.now() + "_" + (file.name || "photo.jpg");
+
+            const payload = {
+              photoData: compressedDataUrl,
+              photoName: photoName,
+              photoType: 'image/jpeg'
+            };
+
+            fetch(SCRIPT_URL, {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(result => {
+              if (result.status === 'success') {
+                addPhotoToGrid(compressedDataUrl);
+                resolve();
+              } else {
+                reject(new Error(result.message || '사진 저장에 실패했습니다.'));
+              }
+            })
+            .catch(error => {
+              console.error('사진 업로드 오류:', error);
+              reject(error);
+            });
+
+          } catch (error) {
+            reject(error);
+          }
         };
 
-        console.log("사진 전송 시작:", photoName);
+        img.onerror = function() {
+          reject(new Error('사진을 불러오지 못했습니다.'));
+        };
 
-        // ★ RSVP와 동일한 방식으로 전송
-        fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
-        })
-        .then(() => {
-
-          console.log("사진 전송 요청 완료:", photoName);
-
-          // 화면에도 표시
-          addPhotoToGrid(compressedDataUrl);
-
-          resolve();
-
-        })
-        .catch(error => {
-
-          console.error("사진 전송 실패:", error);
-
-          reject(error);
-
-        });
-
+        img.src = event.target.result;
       };
 
-      img.onerror = function() {
-        reject(new Error("이미지를 불러오지 못했습니다."));
+      reader.onerror = function() {
+        reject(new Error('사진 파일을 읽지 못했습니다.'));
       };
 
-      img.src = event.target.result;
-    };
+      reader.readAsDataURL(file);
+    });
+  }
 
-    reader.onerror = function() {
-      reject(new Error("파일을 읽지 못했습니다."));
-    };
+  function addPhotoToGrid(imageSrc) {
+    const snapGrid = document.getElementById('snapGrid');
+    const uploadLabel = snapGrid.firstElementChild;
 
-    reader.readAsDataURL(file);
-  });
-}
+    const newItem = document.createElement('div');
+    newItem.className = 'snap-item';
+    newItem.innerHTML = `<img src="${imageSrc}" alt="하객스냅 사진">`;
 
-
-function addPhotoToGrid(imageSrc) {
-
-  const snapGrid = document.getElementById('snapGrid');
-
-  const uploadLabel = snapGrid.firstElementChild;
-
-  const newItem = document.createElement('div');
-
-  newItem.className = 'snap-item';
-
-  newItem.innerHTML =
-    `<img src="${imageSrc}" alt="하객스냅 사진">`;
-
-  snapGrid.insertBefore(newItem, uploadLabel);
-}
+    snapGrid.insertBefore(newItem, uploadLabel);
+  }
 </script>
 </body>
 </html>
