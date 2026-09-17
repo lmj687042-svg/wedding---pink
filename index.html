@@ -18,11 +18,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
+
   <!-- 통합 스타일 -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background-color: #0d0d0d;
       color: #f1f1f1;
@@ -32,6 +36,7 @@
       display: flex;
       justify-content: center;
     }
+
     .page {
       width: 100%;
       max-width: 430px;
@@ -43,31 +48,93 @@
 
     /* 오프닝 */
     .opening-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: #0d0d0d; z-index: 9999;
-      display: flex; justify-content: center; align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0d0d0d;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
-    .opening-overlay.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
-    .opening-content { text-align: center; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-    .opening-couples { font-size: 1.6rem; font-weight: 500; color: #d88a9a; letter-spacing: 2px; margin-bottom: 30px; }
-    .opening-heart { color: #d88a9a; margin: 0 8px; font-size: 1.4rem; display: inline-block; }
+
+    .opening-overlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .opening-content {
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .opening-couples {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #d88a9a;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+    }
+
+    .opening-heart {
+      color: #d88a9a;
+      margin: 0 8px;
+      font-size: 1.4rem;
+      display: inline-block;
+    }
+
     .opening-btn {
-      padding: 12px 28px; background-color: transparent; border: 1.5px solid #d88a9a;
-      color: #d88a9a; border-radius: 30px; font-size: 0.95rem; cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      background-color: transparent;
+      border: 1.5px solid #d88a9a;
+      color: #d88a9a;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     /* 상단 헤더 */
     .top-header {
-      position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 430px; z-index: 100;
-      background-color: rgba(13, 13, 13, 0.85); backdrop-filter: blur(8px);
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      z-index: 100;
+      background-color: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .header-title { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; letter-spacing: 2px; color: #d88a9a; }
-    .menu-icon { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
+
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: #d88a9a;
+    }
+
+    .menu-icon {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
 
     /* 섹션 공통 및 구분선 스타일 */
     .section {
@@ -76,7 +143,7 @@
       box-sizing: border-box;
       position: relative;
     }
-    
+
     .section:not(:last-of-type)::after {
       content: '';
       position: absolute;
@@ -87,56 +154,211 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
-    /* 커버 (첫 화면 분홍색 포스터) */
+    /* 커버 */
     .cover {
-      width: 100%; padding: 70px 24px 40px 24px;
-      background-color: #d88a9a; color: #111111; text-align: center;
-      border-radius: 0 0 8px 8px; box-sizing: border-box;
+      width: 100%;
+      padding: 70px 24px 40px 24px;
+      background-color: #d88a9a;
+      color: #111111;
+      text-align: center;
+      border-radius: 0 0 8px 8px;
+      box-sizing: border-box;
       position: relative;
     }
+
     .cover::after {
       content: '';
       position: absolute;
-      bottom: 0; left: 24px; right: 24px;
-      height: 1px; background: rgba(0, 0, 0, 0.1);
+      bottom: 0;
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.1);
     }
 
-    .cover-hero-header { margin-bottom: 12px; }
-    .cover-kicker { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; }
-    .cover-subkicker { font-family: 'Cormorant Garamond', serif; font-size: 0.65rem; letter-spacing: 1.5px; margin-top: 2px; }
-    .cover-photo-wrap { position: relative; width: 100%; border-radius: 4px; overflow: hidden; }
-    .cover-photo { width: 100%; display: block; object-fit: cover; }
-    
-    .cover-poster-title {
-      position: absolute; 
-      top: 60%; 
-      left: 50%; 
-      transform: translate(-50%, -50%);
-      width: 90%; 
-      text-align: center; 
-      font-family: 'Caveat', cursive;
-      font-size: 2.8rem; 
-      font-weight: 700; 
-      line-height: 1.05; 
-      color: #ffffff;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    .cover-hero-header {
+      margin-bottom: 12px;
     }
-    .cover-info { margin-top: 14px; font-size: 0.85rem; font-weight: 600; }
+
+    .cover-kicker {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    .cover-subkicker {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+    }
+
+    .cover-photo-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .cover-photo {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    /*
+      손글씨 애니메이션
+      - 글자 자체는 Caveat
+      - SVG stroke가 먼저 그려지고
+      - 이후 fill이 자연스럽게 나타남
+    */
+    .cover-poster-title {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 96%;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .handwriting-svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .handwriting-line {
+      font-family: 'Caveat', cursive;
+      font-size: 52px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: middle;
+
+      fill: transparent;
+      stroke: #ffffff;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+
+      stroke-dasharray: 900;
+      stroke-dashoffset: 900;
+
+      animation:
+        handwritingStroke 1.25s ease-out forwards,
+        handwritingFill 0.35s ease-out forwards;
+    }
+
+    .handwriting-line.line-1 {
+      animation-delay: 0.45s, 1.45s;
+    }
+
+    .handwriting-line.line-2 {
+      animation-delay: 1.65s, 2.65s;
+    }
+
+    .handwriting-line.line-3 {
+      animation-delay: 2.85s, 3.85s;
+    }
+
+    .handwriting-line.line-4 {
+      animation-delay: 4.05s, 5.05s;
+    }
+
+    .handwriting-line.line-5 {
+      animation-delay: 5.25s, 6.25s;
+    }
+
+    @keyframes handwritingStroke {
+      0% {
+        stroke-dashoffset: 900;
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes handwritingFill {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: #ffffff;
+      }
+    }
+
+    .cover-info {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
 
     /* 초대글 */
-    .intro-text-block { text-align: center; width: 100%; }
-    .join-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; line-height: 1.25; color: #ffffff; margin-bottom: 28px; }
-    .family-info { font-size: 0.88rem; color: #ccc; margin-bottom: 40px; line-height: 1.9; }
-    .family-info .role { font-size: 0.75rem; color: #777; }
-    .family-info strong { color: #fff; }
-    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 4px; color: #d88a9a; text-align: center; margin-bottom: 24px; }
-    .story-intro { font-size: 0.85rem; color: #aaa; line-height: 1.85; }
+    .intro-text-block {
+      text-align: center;
+      width: 100%;
+    }
+
+    .join-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 300;
+      line-height: 1.25;
+      color: #ffffff;
+      margin-bottom: 28px;
+    }
+
+    .family-info {
+      font-size: 0.88rem;
+      color: #ccc;
+      margin-bottom: 40px;
+      line-height: 1.9;
+    }
+
+    .family-info .role {
+      font-size: 0.75rem;
+      color: #777;
+    }
+
+    .family-info strong {
+      color: #fff;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      color: #d88a9a;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .story-intro {
+      font-size: 0.85rem;
+      color: #aaa;
+      line-height: 1.85;
+    }
 
     /* 캘린더 */
-    .date-lead { text-align: center; margin-bottom: 24px; }
-    .big-date { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #ffffff; }
-    .weekday { font-size: 0.8rem; color: #888; }
-    
+    .date-lead {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .big-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: #ffffff;
+    }
+
+    .weekday {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
     .calendar-wrap {
       width: 100%;
       background: #141414;
@@ -144,6 +366,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
+
     .calendar-grid {
       display: grid !important;
       grid-template-columns: repeat(7, 1fr) !important;
@@ -151,6 +374,7 @@
       text-align: center;
       font-size: 0.82rem;
     }
+
     .calendar-grid div {
       aspect-ratio: 1;
       display: flex;
@@ -158,7 +382,11 @@
       justify-content: center;
       color: #ccc;
     }
-    .calendar-grid div:nth-child(7n+1) { color: #d88a9a; }
+
+    .calendar-grid div:nth-child(7n+1) {
+      color: #d88a9a;
+    }
+
     .calendar-grid div.wedding-day {
       background-color: #d88a9a;
       color: #0d0d0d;
@@ -167,9 +395,28 @@
     }
 
     /* 갤러리 */
-    .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
-    .gallery-item { width: 100%; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #1a1a1a; cursor: pointer; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      width: 100%;
+    }
+
+    .gallery-item {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #1a1a1a;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
     /* 공통 박스 */
     .rsvp-banner-box {
@@ -178,6 +425,7 @@
       padding: 24px 20px;
       text-align: center;
     }
+
     .rsvp-desc {
       font-size: 0.85rem;
       color: #aaa;
@@ -185,85 +433,304 @@
       line-height: 1.5;
     }
 
-    /* 팝업(모달) 스타일 */
+    /* 팝업 */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
-      z-index: 10000; display: flex; justify-content: center; align-items: center;
-      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
-    .modal-overlay.show { opacity: 1; visibility: visible; }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .modal-content {
-      width: 88%; max-width: 360px; background: #181818; border: 1px solid #333;
-      border-radius: 12px; padding: 24px 20px; position: relative;
+      width: 88%;
+      max-width: 360px;
+      background: #181818;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 24px 20px;
+      position: relative;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    .modal-close {
-      position: absolute; top: 14px; right: 16px; background: none; border: none;
-      color: #888; font-size: 1.2rem; cursor: pointer;
-    }
-    .modal-title {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: #d88a9a;
-      text-align: center; margin-bottom: 4px; letter-spacing: 2px;
-    }
-    .modal-subtitle { font-size: 0.78rem; color: #888; text-align: center; margin-bottom: 20px; }
 
-    .form-group { margin-bottom: 14px; text-align: left; }
-    .form-group label { display: block; font-size: 0.78rem; color: #aaa; margin-bottom: 6px; }
-    .form-input, .form-select {
-      width: 100%; background: #111; border: 1px solid #333; border-radius: 4px;
-      padding: 10px; color: #fff; font-size: 0.85rem; font-family: 'Noto Serif KR', serif;
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
-    .form-input:focus, .form-select:focus { outline: none; border-color: #d88a9a; }
-    .radio-group { display: flex; gap: 16px; font-size: 0.85rem; color: #ccc; align-items: center; margin-top: 4px; }
-    .radio-group label { display: flex; align-items: center; gap: 6px; cursor: pointer; margin-bottom: 0; color: #ccc; }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: #d88a9a;
+      text-align: center;
+      margin-bottom: 4px;
+      letter-spacing: 2px;
+    }
+
+    .modal-subtitle {
+      font-size: 0.78rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 10px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-family: 'Noto Serif KR', serif;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #d88a9a;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: #ccc;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      margin-bottom: 0;
+      color: #ccc;
+    }
+
     .action-btn {
-      width: 100%; background-color: #d88a9a; color: #0d0d0d; border: none;
-      border-radius: 4px; padding: 12px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 6px;
+      width: 100%;
+      background-color: #d88a9a;
+      color: #0d0d0d;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
     }
-    .action-btn:disabled { background-color: #555; cursor: not-allowed; }
+
+    .action-btn:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
 
     /* 실시간 하객스냅 */
     .snap-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 12px;
     }
+
     .snap-item {
-      aspect-ratio: 1; background: #1a1a1a; border-radius: 4px; overflow: hidden; position: relative;
+      aspect-ratio: 1;
+      background: #1a1a1a;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
     }
-    .snap-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    .snap-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .snap-upload-label {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      border: 1.5px dashed #444; cursor: pointer; color: #888; font-size: 0.75rem; text-align: center; gap: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed #444;
+      cursor: pointer;
+      color: #888;
+      font-size: 0.75rem;
+      text-align: center;
+      gap: 4px;
     }
-    .snap-upload-label:hover { border-color: #d88a9a; color: #d88a9a; }
+
+    .snap-upload-label:hover {
+      border-color: #d88a9a;
+      color: #d88a9a;
+    }
 
     /* 위치 & 계좌 */
-    .location-info { text-align: center; width: 100%; }
-    .venue { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
-    .address { font-size: 0.8rem; color: #888; margin-bottom: 16px; }
-    .map-buttons { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
-    .chip-button { padding: 6px 12px; background: #1a1a1a; border: 1px solid #333; color: #d88a9a; text-decoration: none; font-size: 0.75rem; border-radius: 20px; }
-    .transport { text-align: left; font-size: 0.8rem; color: #aaa; background: #141414; padding: 14px; border-radius: 4px; margin-top: 16px; }
-    .transport-row { margin-bottom: 8px; }
-    .transport-row:last-child { margin-bottom: 0; }
+    .location-info {
+      text-align: center;
+      width: 100%;
+    }
 
-    .account-subtitle { text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 16px; }
-    .account-list { width: 100%; }
-    .account-group { margin-bottom: 10px; background: #141414; border-radius: 4px; overflow: hidden; }
-    .account-toggle { width: 100%; padding: 12px 14px; background: none; border: none; color: #fff; display: flex; justify-content: space-between; font-size: 0.85rem; cursor: pointer; }
-    .account-content { padding: 0 14px 12px 14px; display: none; }
-    .account-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #aaa; }
-    .copy-btn { padding: 4px 8px; background: #222; border: 1px solid #444; color: #fff; font-size: 0.7rem; border-radius: 2px; cursor: pointer; }
+    .venue {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .address {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    .map-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .chip-button {
+      padding: 6px 12px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #d88a9a;
+      text-decoration: none;
+      font-size: 0.75rem;
+      border-radius: 20px;
+    }
+
+    .transport {
+      text-align: left;
+      font-size: 0.8rem;
+      color: #aaa;
+      background: #141414;
+      padding: 14px;
+      border-radius: 4px;
+      margin-top: 16px;
+    }
+
+    .transport-row {
+      margin-bottom: 8px;
+    }
+
+    .transport-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .account-subtitle {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .account-list {
+      width: 100%;
+    }
+
+    .account-group {
+      margin-bottom: 10px;
+      background: #141414;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .account-toggle {
+      width: 100%;
+      padding: 12px 14px;
+      background: none;
+      border: none;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .account-content {
+      padding: 0 14px 12px 14px;
+      display: none;
+    }
+
+    .account-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .copy-btn {
+      padding: 4px 8px;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      font-size: 0.7rem;
+      border-radius: 2px;
+      cursor: pointer;
+    }
 
     /* 토스트 팝업 */
     .toast-popup {
-      position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background-color: #d88a9a; color: #0d0d0d; padding: 10px 22px; border-radius: 30px;
-      font-size: 0.85rem; font-weight: 600; box-shadow: 0 4px 15px rgba(216, 138, 154, 0.4);
-      opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 20000; white-space: nowrap;
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background-color: #d88a9a;
+      color: #0d0d0d;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(216, 138, 154, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 20000;
+      white-space: nowrap;
     }
-    .toast-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
+    .toast-popup.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
 
     /* 사진 업로드 로딩 팝업 */
     #uploadLoadingPopup {
@@ -278,10 +745,12 @@
       visibility: hidden;
       transition: opacity 0.2s ease, visibility 0.2s ease;
     }
+
     #uploadLoadingPopup.show {
       opacity: 1;
       visibility: visible;
     }
+
     .upload-loading-box {
       width: calc(100% - 80px);
       max-width: 300px;
@@ -291,6 +760,7 @@
       text-align: center;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
     }
+
     .upload-loading-spinner {
       width: 32px;
       height: 32px;
@@ -300,22 +770,34 @@
       border-radius: 50%;
       animation: uploadSpin 0.8s linear infinite;
     }
+
     @keyframes uploadSpin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+
     .upload-loading-text {
       font-size: 0.95rem;
       line-height: 1.7;
       color: #333;
     }
+
     .upload-loading-text span {
       font-size: 0.8rem;
       color: #999;
     }
 
-    footer { text-align: center; padding: 40px 0; }
-    .footer-mark { font-family: 'Cormorant Garamond', serif; letter-spacing: 4px; font-size: 0.8rem; color: #444; }
+    footer {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .footer-mark {
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 4px;
+      font-size: 0.8rem;
+      color: #444;
+    }
   </style>
 </head>
 
@@ -325,8 +807,11 @@
 <div class="opening-overlay" id="openingOverlay">
   <div class="opening-content">
     <div class="opening-couples">
-      <span>이용재</span><span class="opening-heart">♥</span><span>이민진</span>
+      <span>이용재</span>
+      <span class="opening-heart">♥</span>
+      <span>이민진</span>
     </div>
+
     <button class="opening-btn" id="openBtn">
       <span class="btn-heart">♥</span>
       <span>초대장 열기</span>
@@ -334,42 +819,72 @@
   </div>
 </div>
 
-<!-- 2. RSVP 팝업창 (모달) -->
+<!-- 2. RSVP 팝업창 -->
 <div class="modal-overlay" id="rsvpModal">
   <div class="modal-content">
     <button class="modal-close" id="modalCloseBtn">&times;</button>
+
     <div class="modal-title">RSVP</div>
     <div class="modal-subtitle">참석 여부를 알려주세요</div>
 
     <form id="rsvpForm">
       <div class="form-group">
         <label>구분</label>
+
         <div class="radio-group">
-          <label><input type="radio" name="side" value="신랑측" checked> 신랑 측</label>
-          <label><input type="radio" name="side" value="신부측"> 신부 측</label>
+          <label>
+            <input type="radio" name="side" value="신랑측" checked>
+            신랑 측
+          </label>
+
+          <label>
+            <input type="radio" name="side" value="신부측">
+            신부 측
+          </label>
         </div>
       </div>
 
       <div class="form-group">
         <label>성함</label>
-        <input type="text" class="form-input" id="rsvpName" placeholder="성함을 입력해주세요" required>
+        <input
+          type="text"
+          class="form-input"
+          id="rsvpName"
+          placeholder="성함을 입력해주세요"
+          required
+        >
       </div>
 
       <div class="form-group">
         <label>연락처</label>
-        <input type="tel" class="form-input" id="rsvpPhone" placeholder="연락처 (- 없이 입력)" required>
+        <input
+          type="tel"
+          class="form-input"
+          id="rsvpPhone"
+          placeholder="연락처 (- 없이 입력)"
+          required
+        >
       </div>
 
       <div class="form-group">
         <label>참석 여부</label>
+
         <div class="radio-group">
-          <label><input type="radio" name="attendance" value="참석" checked> 참석</label>
-          <label><input type="radio" name="attendance" value="불참"> 불참</label>
+          <label>
+            <input type="radio" name="attendance" value="참석" checked>
+            참석
+          </label>
+
+          <label>
+            <input type="radio" name="attendance" value="불참">
+            불참
+          </label>
         </div>
       </div>
 
       <div class="form-group">
         <label>식사 여부</label>
+
         <select class="form-select" id="rsvpMeal">
           <option value="식사예정">식사 예정 (예식장)</option>
           <option value="식사안함">식사 안 함</option>
@@ -377,12 +892,15 @@
         </select>
       </div>
 
-      <button type="submit" class="action-btn" id="rsvpSubmitBtn">전송하기</button>
+      <button type="submit" class="action-btn" id="rsvpSubmitBtn">
+        전송하기
+      </button>
     </form>
   </div>
 </div>
 
 <main class="page">
+
   <!-- 상단 헤더 -->
   <header class="top-header">
     <div class="header-title">The Wedding of YJ&MJ</div>
@@ -391,19 +909,67 @@
 
   <!-- COVER SECTION -->
   <section class="cover" id="coverSection">
+
     <div class="cover-hero-header">
-      <div class="cover-kicker">JANUARY 02, 2027 SAT 11:00 AM</div>
-      <div class="cover-subkicker">AT APELGAMO SEONLLEUNG</div>
+      <div class="cover-kicker">
+        JANUARY 02, 2027 SAT 11:00 AM
+      </div>
+
+      <div class="cover-subkicker">
+        AT APELGAMO SEONLLEUNG
+      </div>
     </div>
 
     <div class="cover-photo-wrap">
-      <img class="cover-photo" src="images/hero/1.jpg" alt="메인 사진">
+
+      <img
+        class="cover-photo"
+        src="images/hero/1.jpg"
+        alt="메인 사진"
+      >
+
+      <!-- 손글씨 애니메이션 -->
       <div class="cover-poster-title">
-        <span>I feel I'm</span><br>
-        <span>falling in</span><br>
-        <span>love with</span><br>
-        <span>all my</span><br>
-        <span class="last-word">heart</span>
+
+        <svg
+          class="handwriting-svg"
+          viewBox="0 0 430 350"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
+
+          <text
+            x="215"
+            y="35"
+            class="handwriting-line line-1"
+          >I feel I'm</text>
+
+          <text
+            x="215"
+            y="105"
+            class="handwriting-line line-2"
+          >falling in</text>
+
+          <text
+            x="215"
+            y="175"
+            class="handwriting-line line-3"
+          >love with</text>
+
+          <text
+            x="215"
+            y="245"
+            class="handwriting-line line-4"
+          >all my</text>
+
+          <text
+            x="215"
+            y="315"
+            class="handwriting-line line-5"
+          >heart</text>
+
+        </svg>
+
       </div>
     </div>
 
@@ -411,371 +977,834 @@
       <div>2027.01.02 토요일 오전 11:00</div>
       <div>아펠가모 선릉</div>
     </div>
+
   </section>
 
   <!-- INVITATION SECTION -->
   <section class="section">
+
     <div class="intro-text-block">
-      <h2 class="join-title">Join us<br>for our wedding</h2>
+
+      <h2 class="join-title">
+        Join us<br>
+        for our wedding
+      </h2>
 
       <div class="family-info">
-        <div>이강목 · 임남영 <span class="role">의 아들</span> <strong>용재</strong></div>
-        <div>이만수 · 조은영 <span class="role">의 딸</span> <strong>민진</strong></div>
+        <div>
+          이강목 · 임남영
+          <span class="role">의 아들</span>
+          <strong>용재</strong>
+        </div>
+
+        <div>
+          이만수 · 조은영
+          <span class="role">의 딸</span>
+          <strong>민진</strong>
+        </div>
       </div>
 
-      <div class="section-title">INVITATION</div>
+      <div class="section-title">
+        INVITATION
+      </div>
 
       <div class="story-intro">
         서로가 마주 보며 다져온 사랑을<br>
         이제 함께 한 곳을 바라보며 걸어가려 합니다.<br><br>
+
         저희 두 사람의 새로운 시작을<br>
         함께 축복해 주시면 더없는 기쁨으로 간직하겠습니다.
       </div>
+
     </div>
+
   </section>
 
   <!-- CALENDAR SECTION -->
   <section class="section">
+
     <div class="date-lead">
       <div class="big-date">2027.01.02</div>
       <div class="weekday">토요일 오전 11시</div>
     </div>
 
     <div class="calendar-wrap">
-      <div class="calendar-grid" id="calendarGrid"></div>
+      <div
+        class="calendar-grid"
+        id="calendarGrid"
+      ></div>
     </div>
+
   </section>
 
   <!-- GALLERY SECTION -->
   <section class="section">
-    <div class="section-title">GALLERY</div>
-    <div class="photo-grid">
-      <div class="gallery-item"><img src="images/hero/1.jpg" alt="갤러리 1"></div>
-      <div class="gallery-item"><img src="images/hero/2.jpg" alt="갤러리 2"></div>
+
+    <div class="section-title">
+      GALLERY
     </div>
+
+    <div class="photo-grid">
+
+      <div class="gallery-item">
+        <img
+          src="images/hero/1.jpg"
+          alt="갤러리 1"
+        >
+      </div>
+
+      <div class="gallery-item">
+        <img
+          src="images/hero/2.jpg"
+          alt="갤러리 2"
+        >
+      </div>
+
+    </div>
+
   </section>
 
-  <!-- 본문 내 RSVP 다시 열기 버튼 섹션 -->
+  <!-- RSVP SECTION -->
   <section class="section">
-    <div class="section-title">RSVP</div>
-    <div class="account-subtitle">참석 여부 변경 및 확인</div>
-    
-    <div class="rsvp-banner-box">
-      <div class="rsvp-desc">
-        참석 여부를 다시 수정하시거나<br>아직 전달하지 못하셨다면 아래 버튼을 눌러주세요.
-      </div>
-      <button class="action-btn" id="openRsvpModalBtn">참석 여부 작성하기</button>
+
+    <div class="section-title">
+      RSVP
     </div>
+
+    <div class="account-subtitle">
+      참석 여부 변경 및 확인
+    </div>
+
+    <div class="rsvp-banner-box">
+
+      <div class="rsvp-desc">
+        참석 여부를 다시 수정하시거나<br>
+        아직 전달하지 못하셨다면 아래 버튼을 눌러주세요.
+      </div>
+
+      <button
+        class="action-btn"
+        id="openRsvpModalBtn"
+      >
+        참석 여부 작성하기
+      </button>
+
+    </div>
+
   </section>
 
   <!-- LOCATION SECTION -->
   <section class="section">
-    <div class="section-title">LOCATION</div>
+
+    <div class="section-title">
+      LOCATION
+    </div>
 
     <div class="location-info">
-      <div class="venue">아펠가모 선릉</div>
+
+      <div class="venue">
+        아펠가모 선릉
+      </div>
+
       <div class="address">
-        서울특별시 강남구 테헤란로 322 한신인터밸리24 빌딩 4층<br>02-2186-6888
+        서울특별시 강남구 테헤란로 322 한신인터밸리24 빌딩 4층<br>
+        02-2186-6888
       </div>
 
       <div class="map-buttons">
-        <a class="chip-button" href="https://naver.me/GZDPBDgT" target="_blank">네이버 지도 ↗</a>
-        <a class="chip-button" href="https://kko.to/M3hHQ5aIwQ" target="_blank">카카오맵 ↗</a>
-        <a class="chip-button" href="https://tmap.co.kr" target="_blank">티맵 ↗</a>
+
+        <a
+          class="chip-button"
+          href="https://naver.me/GZDPBDgT"
+          target="_blank"
+        >
+          네이버 지도 ↗
+        </a>
+
+        <a
+          class="chip-button"
+          href="https://kko.to/M3hHQ5aIwQ"
+          target="_blank"
+        >
+          카카오맵 ↗
+        </a>
+
+        <a
+          class="chip-button"
+          href="https://tmap.co.kr"
+          target="_blank"
+        >
+          티맵 ↗
+        </a>
+
       </div>
 
       <div class="transport">
+
         <div class="transport-row">
           <strong>[지하철]</strong>
-          <span>2호선, 수인분당선 선릉역 4번 출구에서 도보 3분</span>
+          <span>
+            2호선, 수인분당선 선릉역 4번 출구에서 도보 3분
+          </span>
         </div>
+
         <div class="transport-row">
           <strong>[버스]</strong>
-          <span>선릉역 정류장 하차 (간선: 146, 341, 360 / 지선: 4412)</span>
+          <span>
+            선릉역 정류장 하차
+            (간선: 146, 341, 360 / 지선: 4412)
+          </span>
         </div>
+
         <div class="transport-row">
           <strong>[주차]</strong>
-          <span>건물 내 지하 주차장 이용</span>
+          <span>
+            건물 내 지하 주차장 이용
+          </span>
         </div>
+
       </div>
+
     </div>
+
   </section>
 
   <!-- ACCOUNT SECTION -->
   <section class="section">
-    <div class="section-title">ACCOUNT</div>
-    <div class="account-subtitle">마음 전하실 곳</div>
+
+    <div class="section-title">
+      ACCOUNT
+    </div>
+
+    <div class="account-subtitle">
+      마음 전하실 곳
+    </div>
 
     <div class="account-list">
+
       <div class="account-group">
+
         <button class="account-toggle">
-          <span>신랑측 계좌번호</span><span>∨</span>
+          <span>신랑측 계좌번호</span>
+          <span>∨</span>
         </button>
+
         <div class="account-content">
+
           <div class="account-row">
-            <span>하나은행 748-91118-707707 (이용재)</span>
-            <button class="copy-btn" data-copy="748-91118-707707">복사</button>
+
+            <span>
+              하나은행 748-91118-707707 (이용재)
+            </span>
+
+            <button
+              class="copy-btn"
+              data-copy="748-91118-707707"
+            >
+              복사
+            </button>
+
           </div>
+
         </div>
+
       </div>
 
       <div class="account-group">
+
         <button class="account-toggle">
-          <span>신부측 계좌번호</span><span>∨</span>
+          <span>신부측 계좌번호</span>
+          <span>∨</span>
         </button>
+
         <div class="account-content">
+
           <div class="account-row">
-            <span>하나은행 183-910541-33907 (이민진)</span>
-            <button class="copy-btn" data-copy="183-910541-33907">복사</button>
+
+            <span>
+              하나은행 183-910541-33907 (이민진)
+            </span>
+
+            <button
+              class="copy-btn"
+              data-copy="183-910541-33907"
+            >
+              복사
+            </button>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
+
   </section>
 
-  <!-- 실시간 하객스냅 섹션 -->
+  <!-- 실시간 하객스냅 -->
   <section class="section">
-    <div class="section-title">GUEST SNAP</div>
-    <div class="account-subtitle">실시간 하객스냅 사진첩</div>
-    
+
+    <div class="section-title">
+      GUEST SNAP
+    </div>
+
+    <div class="account-subtitle">
+      실시간 하객스냅 사진첩
+    </div>
+
     <div class="rsvp-banner-box">
-      <div style="font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 14px;">
+
+      <div
+        style="
+          font-size: 0.8rem;
+          color: #aaa;
+          text-align: center;
+          margin-bottom: 14px;
+        "
+      >
         결혼식 당일, 하객 여러분이 찍어주신 소중한 순간들을 공유해주세요!
       </div>
-      
-      <div class="snap-grid" id="snapGrid">
+
+      <div
+        class="snap-grid"
+        id="snapGrid"
+      >
+
         <label class="snap-item snap-upload-label">
-          <span style="font-size: 1.2rem;">+</span>
-          <span>사진 올리기</span>
-          <input type="file" id="snapInput" accept="image/*" multiple style="display: none;">
+
+          <span style="font-size: 1.2rem;">
+            +
+          </span>
+
+          <span>
+            사진 올리기
+          </span>
+
+          <input
+            type="file"
+            id="snapInput"
+            accept="image/*"
+            multiple
+            style="display: none;"
+          >
+
         </label>
+
       </div>
+
     </div>
+
   </section>
 
   <footer>
-    <div class="footer-mark">THANK YOU</div>
+    <div class="footer-mark">
+      THANK YOU
+    </div>
   </footer>
+
 </main>
 
-<!-- 토스트 팝업 메시지 -->
-<div class="toast-popup" id="toastPopup">안내 메시지</div>
+<!-- 토스트 팝업 -->
+<div
+  class="toast-popup"
+  id="toastPopup"
+>
+  안내 메시지
+</div>
 
-<!-- 스크립트 -->
 <script>
-  // 최근 발급하신 구글 앱스 스크립트 웹 앱 URL 반영 완료
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTdEmkxKkEuRpud4uKreKj84OftCrn4l-Y3zH8HovYCGMMWPFuYl6Vyy5g3DG5vecY/exec";
 
-  // 1. 오프닝 닫기 및 RSVP 팝업 동시 띄우기
-  document.getElementById('openBtn').addEventListener('click', function() {
-    document.getElementById('openingOverlay').classList.add('fade-out');
-    
-    setTimeout(() => {
-      document.getElementById('rsvpModal').classList.add('show');
-    }, 300);
-  });
+  // 최근 발급하신 구글 앱스 스크립트 웹 앱 URL
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbxTdEmkxKkEuRpud4uKreKj84OftCrn4l-Y3zH8HovYCGMMWPFuYl6Vyy5g3DG5vecY/exec";
 
-  // 2. 캘린더 동적 생성 (2027년 1월)
+
+  // 1. 오프닝 닫기 및 RSVP 팝업
+  document
+    .getElementById('openBtn')
+    .addEventListener('click', function() {
+
+      document
+        .getElementById('openingOverlay')
+        .classList
+        .add('fade-out');
+
+      setTimeout(() => {
+
+        document
+          .getElementById('rsvpModal')
+          .classList
+          .add('show');
+
+      }, 300);
+
+    });
+
+
+  // 2. 캘린더 동적 생성
   function renderCalendar() {
-    const grid = document.getElementById('calendarGrid');
+
+    const grid =
+      document.getElementById('calendarGrid');
+
     if (!grid) return;
 
-    const daysName = ['일', '월', '화', '수', '목', '금', '토'];
+    const daysName =
+      ['일', '월', '화', '수', '목', '금', '토'];
+
     daysName.forEach(d => {
-      const el = document.createElement('div');
+
+      const el =
+        document.createElement('div');
+
       el.textContent = d;
       el.style.fontWeight = '600';
       el.style.fontSize = '0.75rem';
-      el.style.color = (d === '일') ? '#d88a9a' : '#777';
+      el.style.color =
+        (d === '일')
+          ? '#d88a9a'
+          : '#777';
+
       grid.appendChild(el);
+
     });
 
-    const firstDayIndex = 5; 
+    const firstDayIndex = 5;
     const totalDays = 31;
 
-    for (let i = 0; i < firstDayIndex; i++) {
-      const emptyEl = document.createElement('div');
+    for (
+      let i = 0;
+      i < firstDayIndex;
+      i++
+    ) {
+
+      const emptyEl =
+        document.createElement('div');
+
       grid.appendChild(emptyEl);
+
     }
 
-    for (let day = 1; day <= totalDays; day++) {
-      const dayEl = document.createElement('div');
+    for (
+      let day = 1;
+      day <= totalDays;
+      day++
+    ) {
+
+      const dayEl =
+        document.createElement('div');
+
       dayEl.textContent = day;
+
       if (day === 2) {
         dayEl.classList.add('wedding-day');
       }
+
       grid.appendChild(dayEl);
+
     }
+
   }
 
   renderCalendar();
 
-  // 3. 계좌 아코디언
-  document.querySelectorAll('.account-toggle').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const content = this.nextElementSibling;
-      const isOpen = content.style.display === 'block';
-      content.style.display = isOpen ? 'none' : 'block';
-      this.querySelector('span:last-child').textContent = isOpen ? '∨' : '∧';
-    });
-  });
 
-  // 토스트 팝업 함수
+  // 3. 계좌 아코디언
+  document
+    .querySelectorAll('.account-toggle')
+    .forEach(btn => {
+
+      btn.addEventListener('click', function() {
+
+        const content =
+          this.nextElementSibling;
+
+        const isOpen =
+          content.style.display === 'block';
+
+        content.style.display =
+          isOpen
+            ? 'none'
+            : 'block';
+
+        this
+          .querySelector('span:last-child')
+          .textContent =
+            isOpen
+              ? '∨'
+              : '∧';
+
+      });
+
+    });
+
+
+  // 토스트 팝업
   let toastTimer;
+
   function showToast(message) {
-    const toast = document.getElementById('toastPopup');
+
+    const toast =
+      document.getElementById('toastPopup');
+
     toast.textContent = message;
+
     toast.classList.add('show');
-    
+
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2000);
+
+    toastTimer =
+      setTimeout(() => {
+
+        toast.classList.remove('show');
+
+      }, 2000);
+
   }
 
-  // 4. 계좌번호 복사 기능
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const text = this.getAttribute('data-copy');
-      const t = document.createElement("textarea");
-      t.value = text;
-      document.body.appendChild(t);
-      t.select();
-      document.execCommand('copy');
-      document.body.removeChild(t);
-      showToast('계좌번호가 복사되었습니다.');
+
+  // 4. 계좌번호 복사
+  document
+    .querySelectorAll('.copy-btn')
+    .forEach(btn => {
+
+      btn.addEventListener('click', function() {
+
+        const text =
+          this.getAttribute('data-copy');
+
+        const t =
+          document.createElement("textarea");
+
+        t.value = text;
+
+        document.body.appendChild(t);
+
+        t.select();
+
+        document.execCommand('copy');
+
+        document.body.removeChild(t);
+
+        showToast('계좌번호가 복사되었습니다.');
+
+      });
+
     });
-  });
+
 
   // 5. RSVP 팝업 제어
-  const rsvpModal = document.getElementById('rsvpModal');
-  document.querySelectorAll('#openRsvpModalBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      rsvpModal.classList.add('show');
+  const rsvpModal =
+    document.getElementById('rsvpModal');
+
+  document
+    .querySelectorAll('#openRsvpModalBtn')
+    .forEach(btn => {
+
+      btn.addEventListener('click', () => {
+
+        rsvpModal
+          .classList
+          .add('show');
+
+      });
+
     });
-  });
-  document.getElementById('modalCloseBtn').addEventListener('click', () => {
-    rsvpModal.classList.remove('show');
-  });
-  rsvpModal.addEventListener('click', (e) => {
-    if (e.target === rsvpModal) rsvpModal.classList.remove('show');
-  });
 
-  // RSVP 제출 처리
-  document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('rsvpName').value;
-    const submitBtn = document.getElementById('rsvpSubmitBtn');
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = '전송 중...';
+  document
+    .getElementById('modalCloseBtn')
+    .addEventListener('click', () => {
 
-    const payload = {
-      side: document.querySelector('input[name="side"]:checked').value,
-      name: name,
-      phone: document.getElementById('rsvpPhone').value,
-      attendance: document.querySelector('input[name="attendance"]:checked').value,
-      meal: document.getElementById('rsvpMeal').value
-    };
+      rsvpModal
+        .classList
+        .remove('show');
 
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    })
-    .then(() => {
-      completeRsvpSubmission(name);
-    })
-    .catch(() => {
-      completeRsvpSubmission(name);
     });
-  });
+
+  rsvpModal
+    .addEventListener('click', (e) => {
+
+      if (e.target === rsvpModal) {
+
+        rsvpModal
+          .classList
+          .remove('show');
+
+      }
+
+    });
+
+
+  // RSVP 제출
+  document
+    .getElementById('rsvpForm')
+    .addEventListener('submit', function(e) {
+
+      e.preventDefault();
+
+      const name =
+        document
+          .getElementById('rsvpName')
+          .value;
+
+      const submitBtn =
+        document
+          .getElementById('rsvpSubmitBtn');
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '전송 중...';
+
+      const payload = {
+
+        side:
+          document
+            .querySelector('input[name="side"]:checked')
+            .value,
+
+        name: name,
+
+        phone:
+          document
+            .getElementById('rsvpPhone')
+            .value,
+
+        attendance:
+          document
+            .querySelector('input[name="attendance"]:checked')
+            .value,
+
+        meal:
+          document
+            .getElementById('rsvpMeal')
+            .value
+
+      };
+
+      fetch(SCRIPT_URL, {
+
+        method: 'POST',
+
+        mode: 'no-cors',
+
+        headers: {
+          'Content-Type':
+            'text/plain;charset=utf-8'
+        },
+
+        body:
+          JSON.stringify(payload)
+
+      })
+
+      .then(() => {
+
+        completeRsvpSubmission(name);
+
+      })
+
+      .catch(() => {
+
+        completeRsvpSubmission(name);
+
+      });
+
+    });
+
 
   function completeRsvpSubmission(name) {
-    rsvpModal.classList.remove('show');
-    showToast(`${name}님의 참석 여부가 안전하게 전달되었습니다!`);
-    document.getElementById('rsvpForm').reset();
-    
-    const submitBtn = document.getElementById('rsvpSubmitBtn');
+
+    rsvpModal
+      .classList
+      .remove('show');
+
+    showToast(
+      `${name}님의 참석 여부가 안전하게 전달되었습니다!`
+    );
+
+    document
+      .getElementById('rsvpForm')
+      .reset();
+
+    const submitBtn =
+      document
+        .getElementById('rsvpSubmitBtn');
+
     submitBtn.disabled = false;
     submitBtn.textContent = '전송하기';
 
-    document.getElementById('coverSection').scrollIntoView({ behavior: 'smooth' });
+    document
+      .getElementById('coverSection')
+      .scrollIntoView({
+        behavior: 'smooth'
+      });
+
   }
 
+
   // 6. 실시간 하객스냅 사진 업로드
-  document.getElementById('snapInput').addEventListener('change', async function(e) {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+  document
+    .getElementById('snapInput')
+    .addEventListener('change', async function(e) {
 
-    showUploadLoading(`사진을 저장하고 있어요 📸<br><span>잠시만 기다려주세요.</span>`);
+      const files =
+        e.target.files;
 
-    let successCount = 0;
-
-    try {
-      for (let i = 0; i < files.length; i++) {
-        await uploadPhotoSafely(files[i]);
-        successCount++;
-        updateUploadLoading(
-          `사진을 저장하고 있어요 📸<br><span>${successCount} / ${files.length}장 저장 중</span>`
-        );
+      if (
+        !files ||
+        files.length === 0
+      ) {
+        return;
       }
 
-      hideUploadLoading();
-      showToast('사진이 저장되었습니다! 📸');
+      showUploadLoading(
+        `사진을 저장하고 있어요 📸<br>
+        <span>잠시만 기다려주세요.</span>`
+      );
 
-    } catch (error) {
-      hideUploadLoading();
-      showToast('사진 저장 중 문제가 발생했습니다.');
-      console.error(error);
-    }
+      let successCount = 0;
 
-    document.getElementById('snapInput').value = '';
-  });
+      try {
+
+        for (
+          let i = 0;
+          i < files.length;
+          i++
+        ) {
+
+          await uploadPhotoSafely(files[i]);
+
+          successCount++;
+
+          updateUploadLoading(
+            `사진을 저장하고 있어요 📸<br>
+            <span>
+              ${successCount} / ${files.length}장 저장 중
+            </span>`
+          );
+
+        }
+
+        hideUploadLoading();
+
+        showToast(
+          '사진이 저장되었습니다! 📸'
+        );
+
+      } catch (error) {
+
+        hideUploadLoading();
+
+        showToast(
+          '사진 저장 중 문제가 발생했습니다.'
+        );
+
+        console.error(error);
+
+      }
+
+      document
+        .getElementById('snapInput')
+        .value = '';
+
+    });
+
 
   // 사진 업로드 로딩 팝업
   function showUploadLoading(message) {
-    let loading = document.getElementById('uploadLoadingPopup');
+
+    let loading =
+      document.getElementById(
+        'uploadLoadingPopup'
+      );
 
     if (!loading) {
-      loading = document.createElement('div');
-      loading.id = 'uploadLoadingPopup';
+
+      loading =
+        document.createElement('div');
+
+      loading.id =
+        'uploadLoadingPopup';
+
       loading.innerHTML = `
         <div class="upload-loading-box">
+
           <div class="upload-loading-spinner"></div>
-          <div class="upload-loading-text" id="uploadLoadingText"></div>
+
+          <div
+            class="upload-loading-text"
+            id="uploadLoadingText"
+          ></div>
+
         </div>
       `;
+
       document.body.appendChild(loading);
+
     }
 
-    document.getElementById('uploadLoadingText').innerHTML = message;
-    loading.classList.add('show');
+    document
+      .getElementById('uploadLoadingText')
+      .innerHTML = message;
+
+    loading
+      .classList
+      .add('show');
+
     document.body.style.overflow = 'hidden';
+
   }
+
 
   function updateUploadLoading(message) {
-    const text = document.getElementById('uploadLoadingText');
-    if (text) text.innerHTML = message;
+
+    const text =
+      document.getElementById(
+        'uploadLoadingText'
+      );
+
+    if (text) {
+      text.innerHTML = message;
+    }
+
   }
+
 
   function hideUploadLoading() {
-    const loading = document.getElementById('uploadLoadingPopup');
-    if (loading) loading.classList.remove('show');
+
+    const loading =
+      document.getElementById(
+        'uploadLoadingPopup'
+      );
+
+    if (loading) {
+      loading.classList.remove('show');
+    }
+
     document.body.style.overflow = '';
+
   }
 
+
   function uploadPhotoSafely(file) {
+
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+
+      const reader =
+        new FileReader();
 
       reader.onload = function(event) {
-        const img = new Image();
+
+        const img =
+          new Image();
 
         img.onload = function() {
+
           try {
-            const canvas = document.createElement('canvas');
+
+            const canvas =
+              document.createElement('canvas');
+
             let width = img.width;
             let height = img.height;
 
@@ -783,80 +1812,191 @@
             const MAX_HEIGHT = 800;
 
             if (width > height) {
+
               if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
+
+                height *=
+                  MAX_WIDTH / width;
+
+                width =
+                  MAX_WIDTH;
+
               }
+
             } else {
+
               if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
+
+                width *=
+                  MAX_HEIGHT / height;
+
+                height =
+                  MAX_HEIGHT;
+
               }
+
             }
 
             canvas.width = width;
             canvas.height = height;
 
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
+            const ctx =
+              canvas.getContext('2d');
 
-            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
-            const photoName = "snap_" + Date.now() + "_" + (file.name || "photo.jpg");
+            ctx.drawImage(
+              img,
+              0,
+              0,
+              width,
+              height
+            );
+
+            const compressedDataUrl =
+              canvas.toDataURL(
+                'image/jpeg',
+                0.75
+              );
+
+            const photoName =
+              "snap_" +
+              Date.now() +
+              "_" +
+              (file.name || "photo.jpg");
 
             const payload = {
-              photoData: compressedDataUrl,
-              photoName: photoName,
-              photoType: 'image/jpeg'
+
+              photoData:
+                compressedDataUrl,
+
+              photoName:
+                photoName,
+
+              photoType:
+                'image/jpeg'
+
             };
 
             fetch(SCRIPT_URL, {
+
               method: 'POST',
-              body: JSON.stringify(payload)
+
+              body:
+                JSON.stringify(payload)
+
             })
-            .then(response => response.json())
+
+            .then(response =>
+              response.json()
+            )
+
             .then(result => {
-              if (result.status === 'success') {
-                addPhotoToGrid(compressedDataUrl);
+
+              if (
+                result.status ===
+                'success'
+              ) {
+
+                addPhotoToGrid(
+                  compressedDataUrl
+                );
+
                 resolve();
+
               } else {
-                reject(new Error(result.message || '사진 저장에 실패했습니다.'));
+
+                reject(
+                  new Error(
+                    result.message ||
+                    '사진 저장에 실패했습니다.'
+                  )
+                );
+
               }
+
             })
+
             .catch(error => {
-              console.error('사진 업로드 오류:', error);
+
+              console.error(
+                '사진 업로드 오류:',
+                error
+              );
+
               reject(error);
+
             });
 
           } catch (error) {
+
             reject(error);
+
           }
+
         };
 
         img.onerror = function() {
-          reject(new Error('사진을 불러오지 못했습니다.'));
+
+          reject(
+            new Error(
+              '사진을 불러오지 못했습니다.'
+            )
+          );
+
         };
 
-        img.src = event.target.result;
+        img.src =
+          event.target.result;
+
       };
 
       reader.onerror = function() {
-        reject(new Error('사진 파일을 읽지 못했습니다.'));
+
+        reject(
+          new Error(
+            '사진 파일을 읽지 못했습니다.'
+          )
+        );
+
       };
 
       reader.readAsDataURL(file);
+
     });
+
   }
+
 
   function addPhotoToGrid(imageSrc) {
-    const snapGrid = document.getElementById('snapGrid');
-    const uploadLabel = snapGrid.firstElementChild;
 
-    const newItem = document.createElement('div');
-    newItem.className = 'snap-item';
-    newItem.innerHTML = `<img src="${imageSrc}" alt="하객스냅 사진">`;
+    const snapGrid =
+      document.getElementById(
+        'snapGrid'
+      );
 
-    snapGrid.insertBefore(newItem, uploadLabel);
+    const uploadLabel =
+      snapGrid.firstElementChild;
+
+    const newItem =
+      document.createElement('div');
+
+    newItem.className =
+      'snap-item';
+
+    newItem.innerHTML = `
+      <img
+        src="${imageSrc}"
+        alt="하객스냅 사진"
+      >
+    `;
+
+    snapGrid.insertBefore(
+      newItem,
+      uploadLabel
+    );
+
   }
+
 </script>
+
 </body>
 </html>
